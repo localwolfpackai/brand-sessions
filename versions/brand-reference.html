@@ -1,0 +1,2261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lupo Studios — Brand Reference</title>
+<meta name="description" content="The consolidated brand reference for Lupo Studios. Identity, voice, color system, typography, component philosophy, and workspace structure.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* ===================================================
+     TOKENS
+  =================================================== */
+  :root {
+    --bg: #F6F3EF;
+    --bg-warm: #EDE9E3;
+    --bg-accent: #FDF6F0;
+    --ink: #1A1816;
+    --ink-soft: #3A3330;
+    --muted: #8A847E;
+    --warm-stone: #B8A99A;
+
+    /* DESIGN: Primary accent is Blue Accent, not red. Signal stays red for emphasis/error. */
+    --accent: #2563EB;
+    --accent-hover: #1D4ED8;
+    --sky: #82C8E5;
+    --sky-hover: oklch(70% 0.1 222);
+    --soft-blue: #A0C8DB;
+    --amber: #E5AE63;
+    --deep-red: #C13820;
+    --sage: #D5EBB6;
+
+    --signal: #2563EB;
+    --signal-soft: rgba(37, 99, 235, 0.08);
+
+    --border: rgba(26, 24, 22, 0.1);
+    --border-soft: rgba(26, 24, 22, 0.06);
+
+    /* Glass panel */
+    --glass-bg: rgba(255, 253, 249, 0.6);
+    --glass-border: rgba(26, 24, 22, 0.08);
+    --glass-blur: blur(20px);
+
+    /* Physics easing */
+    --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-back: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --ease-quint: cubic-bezier(0.83, 0, 0.17, 1);
+    --ease-draw: cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  /* ===================================================
+     RESET & BASE
+  =================================================== */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--warm-stone) var(--bg);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    position: relative;
+  }
+
+  /* DESIGN: Ambient dual radial wash */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 12% 8%, rgba(37, 99, 235, 0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 55% at 88% 92%, rgba(229, 174, 99, 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 50% 50%, rgba(184, 169, 154, 0.04) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body > * { position: relative; z-index: 1; }
+
+  a { color: var(--accent); text-decoration: none; transition: color 0.3s var(--ease-expo); }
+  a:hover { color: var(--accent-hover); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+
+  /* ===================================================
+     NAVIGATION
+  =================================================== */
+  .nav-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 0 clamp(1rem, 4vw, 2.5rem);
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(246, 243, 239, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border-soft);
+    opacity: 0;
+    transform: translateY(-8px);
+    animation: fadeDown 0.6s var(--ease-expo) 3.2s forwards;
+  }
+
+  @keyframes fadeDown {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .nav-brand svg {
+    width: 20px;
+    height: auto;
+  }
+
+  .nav-brand svg path { fill: var(--ink); }
+
+  .nav-brand-text {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.6rem;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: clamp(1rem, 3vw, 2rem);
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.58rem;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    transition: color 0.3s var(--ease-expo);
+    text-decoration: none;
+  }
+
+  .nav-links a:hover { color: var(--ink); }
+
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+  }
+
+  /* ===================================================
+     HERO
+  =================================================== */
+  .hero {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: clamp(360px, 45vw, 560px);
+    height: clamp(360px, 45vw, 560px);
+    transform: translate(-50%, -56%);
+    background: radial-gradient(circle, rgba(37, 99, 235, 0.08) 0%, rgba(130, 200, 229, 0.06) 30%, transparent 65%);
+    pointer-events: none;
+    border-radius: 50%;
+    z-index: 0;
+  }
+
+  .hero-mark-frame {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-mark {
+    width: clamp(140px, 20vw, 180px);
+    height: auto;
+  }
+
+  .hero-mark path {
+    fill: var(--ink);
+    fill-opacity: 0;
+    stroke: var(--ink);
+    stroke-width: 2;
+    stroke-dasharray: 2200;
+    stroke-dashoffset: 2200;
+    animation: strokeDraw 2s var(--ease-draw) 0.4s forwards,
+               fillReveal 0.4s var(--ease-expo) 2.4s forwards;
+  }
+
+  @keyframes strokeDraw {
+    to { stroke-dashoffset: 0; }
+  }
+
+  @keyframes fillReveal {
+    to { fill-opacity: 1; stroke-opacity: 0; }
+  }
+
+  .hero-title {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    text-align: center;
+    opacity: 0;
+    transform: translateY(16px);
+    animation: fadeUp 0.9s var(--ease-expo) 2.7s forwards;
+    z-index: 1;
+  }
+
+  .hero-subtitle {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 400;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 1.25rem;
+    opacity: 0;
+    transform: translateY(12px);
+    animation: fadeUp 0.8s var(--ease-expo) 3s forwards;
+    z-index: 1;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    opacity: 0;
+    animation: fadeUp 0.8s var(--ease-expo) 3.4s forwards;
+    z-index: 1;
+  }
+
+  .hero-scroll-label {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.5rem;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+    opacity: 0.7;
+  }
+
+  .hero-scroll-line {
+    width: 1px;
+    height: 32px;
+    background: var(--ink);
+    opacity: 0.2;
+    animation: scrollPulse 2.5s var(--ease-quint) infinite 4s;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.12; transform: scaleY(0.7); }
+    50% { opacity: 0.45; transform: scaleY(1.15); }
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===================================================
+     SECTION SHARED
+  =================================================== */
+  section {
+    position: relative;
+    padding: clamp(5rem, 12vw, 8rem) clamp(1.5rem, 6vw, 4rem);
+  }
+
+  .section-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 0;
+    height: 1px;
+    background: var(--accent);
+    transition: width 0.9s var(--ease-expo);
+  }
+
+  .section-label.visible::before {
+    width: 2.25rem;
+  }
+
+  .section-label .dot {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    background: var(--accent);
+    border-radius: 50%;
+    margin-right: 0.25rem;
+  }
+
+  .section-headline {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: clamp(1.85rem, 4vw, 3rem);
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 1rem;
+    max-width: 24ch;
+  }
+
+  .section-subhead {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    max-width: 58ch;
+    margin-bottom: 3rem;
+  }
+
+  /* ===================================================
+     SCROLL REVEALS
+  =================================================== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.9s var(--ease-expo), transform 0.9s var(--ease-expo);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-stagger-1 { transition-delay: 100ms; }
+  .reveal-stagger-2 { transition-delay: 200ms; }
+  .reveal-stagger-3 { transition-delay: 300ms; }
+  .reveal-stagger-4 { transition-delay: 400ms; }
+  .reveal-stagger-5 { transition-delay: 500ms; }
+  .reveal-stagger-6 { transition-delay: 600ms; }
+
+  /* ===================================================
+     GLASS CARD
+  =================================================== */
+  .glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    transition: border-color 0.5s var(--ease-expo),
+                border-radius 0.6s var(--ease-expo),
+                transform 0.5s var(--ease-expo);
+  }
+
+  .glass-card:hover {
+    border-color: rgba(26, 24, 22, 0.16);
+    border-radius: 22px 16px 22px 16px;
+    transform: translateY(-2px);
+  }
+
+  /* ===================================================
+     01 — BRAND IDENTITY
+  =================================================== */
+  .identity-section {
+    background: var(--bg-warm);
+    border-top: 1px solid var(--border-soft);
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .identity-grid {
+    display: grid;
+    grid-template-columns: 5fr 4fr;
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: start;
+  }
+
+  @media (max-width: 768px) {
+    .identity-grid { grid-template-columns: 1fr; }
+  }
+
+  .identity-prose {
+    font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--ink-soft);
+  }
+
+  .identity-prose p + p {
+    margin-top: 1.25rem;
+  }
+
+  .identity-prose strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .identity-prose .pullquote {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.35;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin: 2rem 0;
+    padding-left: 1.5rem;
+    border-left: 2px solid var(--accent);
+  }
+
+  .identity-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .meta-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .meta-key {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.58rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .meta-value {
+    font-size: clamp(0.9rem, 1.15vw, 1rem);
+    font-weight: 400;
+    color: var(--ink);
+  }
+
+  .meta-value code {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.82em;
+    background: var(--signal-soft);
+    color: var(--accent);
+    padding: 0.15em 0.4em;
+    border-radius: 3px;
+  }
+
+  .energy-refs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+  }
+
+  .energy-tag {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.58rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    padding: 0.35em 0.75em;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    color: var(--ink-soft);
+    background: var(--glass-bg);
+  }
+
+  /* ===================================================
+     02 — LOGO
+  =================================================== */
+  .logo-section {
+    background: var(--bg);
+  }
+
+  .logo-layout {
+    display: grid;
+    grid-template-columns: 5fr 6fr;
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: center;
+  }
+
+  @media (max-width: 768px) {
+    .logo-layout { grid-template-columns: 1fr; }
+  }
+
+  .logo-display {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 580 / 520;
+    padding: 1.5rem;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    transition: border-radius 0.6s var(--ease-expo), border-color 0.6s var(--ease-expo);
+  }
+
+  .logo-display:hover {
+    border-radius: 22px 14px 22px 14px;
+    border-color: rgba(26, 24, 22, 0.18);
+  }
+
+  .logo-display svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .logo-specs {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .spec-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .spec-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .spec-key {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.58rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .spec-value {
+    font-size: clamp(0.9rem, 1.15vw, 1rem);
+    font-weight: 400;
+    color: var(--ink);
+    letter-spacing: 0.005em;
+  }
+
+  .spec-value .accent { color: var(--accent); font-weight: 500; }
+
+  .spec-value code {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.8em;
+    background: var(--signal-soft);
+    color: var(--accent);
+    padding: 0.15em 0.4em;
+    border-radius: 3px;
+    word-break: break-all;
+  }
+
+  .logo-usage-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 3rem;
+  }
+
+  @media (max-width: 640px) {
+    .logo-usage-grid { grid-template-columns: 1fr; max-width: 320px; }
+  }
+
+  .logo-usage-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    text-align: center;
+    transition: border-color 0.5s var(--ease-expo), transform 0.5s var(--ease-expo);
+  }
+
+  .logo-usage-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(26, 24, 22, 0.16);
+  }
+
+  .logo-usage-card.dark-bg {
+    background: var(--ink);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .logo-usage-card.dark-bg .logo-usage-label {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .logo-usage-label {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.55rem;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ===================================================
+     03 — COLOR SYSTEM
+  =================================================== */
+  .color-section {
+    background: var(--bg-warm);
+    border-top: 1px solid var(--border-soft);
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.25rem;
+    margin-top: 2rem;
+  }
+
+  .color-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: border-color 0.5s var(--ease-expo), transform 0.5s var(--ease-expo);
+  }
+
+  .color-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(26, 24, 22, 0.16);
+  }
+
+  .color-swatch {
+    width: 100%;
+    height: 80px;
+    position: relative;
+  }
+
+  .color-info {
+    padding: 1rem 1.25rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .color-name {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .color-role {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .color-values {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.4rem;
+  }
+
+  .color-chip {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.55rem;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    padding: 0.25em 0.55em;
+    border-radius: 4px;
+    background: rgba(26, 24, 22, 0.04);
+    color: var(--ink-soft);
+  }
+
+  .gradient-bar {
+    margin-top: 2rem;
+    height: 48px;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .gradient-bar-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+  }
+
+  .gradient-label {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.58rem;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 0.75rem;
+    text-align: center;
+  }
+
+  .color-rules {
+    margin-top: 3rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+
+  .color-rule {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  .color-rule-icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    color: var(--accent);
+  }
+
+  .color-rule-icon.avoid {
+    color: var(--deep-red);
+  }
+
+  /* ===================================================
+     04 — TYPOGRAPHY
+  =================================================== */
+  .type-section {
+    background: var(--bg);
+  }
+
+  .type-stack {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-top: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    .type-stack { grid-template-columns: 1fr; }
+  }
+
+  .type-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: clamp(1.5rem, 3vw, 2rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: border-color 0.5s var(--ease-expo), transform 0.5s var(--ease-expo);
+  }
+
+  .type-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(26, 24, 22, 0.16);
+  }
+
+  .type-specimen {
+    font-size: clamp(1.75rem, 3.5vw, 2.25rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    min-height: 4.5rem;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .type-specimen.serif { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; }
+  .type-specimen.sans { font-family: 'DM Sans', sans-serif; font-weight: 400; }
+  .type-specimen.mono { font-family: 'Geist Mono', monospace; font-weight: 400; font-size: clamp(1.25rem, 2.5vw, 1.5rem); letter-spacing: -0.01em; }
+
+  .type-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .type-meta-name {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.58rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .type-meta-use {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .type-scale {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .type-scale-row {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 1.5rem;
+    align-items: baseline;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .type-scale-row:last-child { border-bottom: none; }
+
+  .type-scale-label {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.55rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-top: 0.15em;
+  }
+
+  .type-scale-sample {
+    font-family: 'Instrument Serif', Georgia, serif;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  .type-rules-grid {
+    margin-top: 3rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .type-rule-card {
+    padding: 1.25rem 1.5rem;
+    border-left: 2px solid var(--border);
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  .type-rule-card strong {
+    color: var(--ink);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  /* ===================================================
+     05 — COMPONENT PHILOSOPHY
+  =================================================== */
+  .component-section {
+    background: var(--bg-accent);
+    border-top: 1px solid var(--border-soft);
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .philosophy-grid {
+    display: grid;
+    grid-template-columns: 7fr 5fr;
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: start;
+  }
+
+  @media (max-width: 768px) {
+    .philosophy-grid { grid-template-columns: 1fr; }
+  }
+
+  .principle-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .principle-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .principle-title {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+
+  .principle-desc {
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    max-width: 50ch;
+  }
+
+  .avoid-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .avoid-item {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border-soft);
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+
+  .avoid-item:last-child { border-bottom: none; }
+
+  .avoid-icon {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+    color: var(--deep-red);
+  }
+
+  .easing-table {
+    margin-top: 3rem;
+  }
+
+  .easing-row {
+    display: grid;
+    grid-template-columns: 120px 1fr 2fr;
+    gap: 1.5rem;
+    align-items: center;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  @media (max-width: 640px) {
+    .easing-row { grid-template-columns: 1fr; gap: 0.5rem; }
+  }
+
+  .easing-row:last-child { border-bottom: none; }
+
+  .easing-name {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  .easing-value {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 400;
+    color: var(--muted);
+  }
+
+  .easing-use {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+  }
+
+  .easing-demo {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.15;
+    transition: transform 0.8s, opacity 0.8s;
+  }
+
+  .easing-row:hover .easing-demo {
+    transform: translateX(60px);
+    opacity: 0.6;
+  }
+
+  .easing-row:nth-child(1):hover .easing-demo { transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1); }
+  .easing-row:nth-child(2):hover .easing-demo { transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+  .easing-row:nth-child(3):hover .easing-demo { transition-timing-function: cubic-bezier(0.83, 0, 0.17, 1); }
+
+  /* ===================================================
+     06 — VOICE & TONE
+  =================================================== */
+  .voice-section {
+    background: var(--bg);
+  }
+
+  .voice-layout {
+    display: grid;
+    grid-template-columns: 5fr 4fr;
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: start;
+  }
+
+  @media (max-width: 768px) {
+    .voice-layout { grid-template-columns: 1fr; }
+  }
+
+  .voice-prose {
+    font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--ink-soft);
+  }
+
+  .voice-prose p + p { margin-top: 1.25rem; }
+  .voice-prose strong { color: var(--ink); font-weight: 500; }
+
+  .voice-principle {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+  }
+
+  .voice-principle-title {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+
+  .voice-principle-desc {
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+
+  .voice-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .voice-sidebar-section h4 {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.58rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+
+  .tone-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tone-tag {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 400;
+    padding: 0.4em 0.85em;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    color: var(--ink-soft);
+    background: var(--glass-bg);
+  }
+
+  .banned-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .banned-list li {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 400;
+    color: var(--muted);
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--border-soft);
+    text-decoration: line-through;
+    text-decoration-color: rgba(193, 56, 32, 0.35);
+  }
+
+  .banned-list li:last-child { border-bottom: none; }
+
+  .sentence-rules {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .sentence-rules li {
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .sentence-rules li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 4px;
+    height: 4px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  /* ===================================================
+     07 — WORKSPACE STRUCTURE
+  =================================================== */
+  .workspace-section {
+    background: var(--bg-warm);
+    border-top: 1px solid var(--border-soft);
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .workspace-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin-top: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    .workspace-grid { grid-template-columns: 1fr; }
+  }
+
+  .workspace-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: 1.75rem;
+    transition: border-color 0.5s var(--ease-expo), transform 0.5s var(--ease-expo);
+  }
+
+  .workspace-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(26, 24, 22, 0.16);
+  }
+
+  .workspace-card-title {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 0.75rem;
+  }
+
+  .dir-tree {
+    list-style: none;
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.72rem;
+    line-height: 2;
+    color: var(--ink-soft);
+  }
+
+  .dir-tree .dir-name {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .dir-tree .dir-desc {
+    color: var(--muted);
+    font-weight: 300;
+    margin-left: 0.5rem;
+  }
+
+  .dir-tree .indent-1 { padding-left: 1.5rem; }
+  .dir-tree .indent-2 { padding-left: 3rem; }
+
+  .workspace-note {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 3rem;
+  }
+
+  .stack-item {
+    padding: 1.25rem;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    text-align: center;
+    transition: border-color 0.5s var(--ease-expo), transform 0.5s var(--ease-expo);
+  }
+
+  .stack-item:hover {
+    transform: translateY(-2px);
+    border-color: rgba(26, 24, 22, 0.16);
+  }
+
+  .stack-item-name {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 0.25rem;
+  }
+
+  .stack-item-role {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.55rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ===================================================
+     FOOTER
+  =================================================== */
+  .site-footer {
+    background: var(--bg-warm);
+    padding: 4rem clamp(1.5rem, 6vw, 4rem) 3rem;
+    text-align: center;
+    position: relative;
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .footer-divider {
+    width: 100%;
+    max-width: 1100px;
+    height: 1px;
+    margin: 0 auto 2.5rem;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(184, 169, 154, 0.3) 25%,
+      rgba(37, 99, 235, 0.25) 50%,
+      rgba(184, 169, 154, 0.3) 75%,
+      transparent 100%);
+  }
+
+  .footer-mark { display: flex; justify-content: center; margin-bottom: 1.5rem; }
+  .footer-mark svg { width: 24px; height: auto; }
+  .footer-mark path { fill: var(--ink); opacity: 0.5; }
+
+  .footer-brand {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.6rem;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .footer-tagline {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--warm-stone);
+    margin-top: 0.75rem;
+  }
+
+  .footer-credit {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.52rem;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--warm-stone);
+    opacity: 0.6;
+    margin-top: 1rem;
+  }
+
+  /* ===================================================
+     A11Y — REDUCED MOTION
+  =================================================== */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-delay: 0ms !important;
+      transition-duration: 0.01ms !important;
+    }
+
+    .hero-mark path {
+      fill-opacity: 1;
+      stroke-opacity: 0;
+      stroke-dashoffset: 0;
+    }
+
+    .hero-title,
+    .hero-subtitle,
+    .hero-scroll,
+    .nav-bar {
+      opacity: 1;
+      transform: none;
+    }
+
+    .reveal {
+      opacity: 1;
+      transform: none;
+    }
+
+    .section-label::before {
+      width: 2.25rem;
+    }
+  }
+
+  /* A11Y — HIGH CONTRAST */
+  @media (prefers-contrast: high) {
+    :root {
+      --border: rgba(26, 24, 22, 0.3);
+      --border-soft: rgba(26, 24, 22, 0.2);
+      --glass-border: rgba(26, 24, 22, 0.25);
+    }
+    body { font-weight: 400; }
+    .section-subhead, .identity-prose, .voice-prose, .principle-desc { font-weight: 400; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================================================
+     NAVIGATION
+================================================ -->
+<nav class="nav-bar" role="navigation" aria-label="Brand reference sections">
+  <div class="nav-brand">
+    <svg viewBox="0 0 500 440" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M240 0H330V350H500V440H247V175L103 440H0Z"/>
+    </svg>
+    <span class="nav-brand-text">Brand Reference</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#identity">Identity</a></li>
+    <li><a href="#logo">Logo</a></li>
+    <li><a href="#colors">Colors</a></li>
+    <li><a href="#typography">Type</a></li>
+    <li><a href="#components">Components</a></li>
+    <li><a href="#voice">Voice</a></li>
+    <li><a href="#workspace">Workspace</a></li>
+  </ul>
+</nav>
+
+<!-- ================================================
+     HERO
+================================================ -->
+<header class="hero" role="banner">
+  <div class="hero-mark-frame">
+    <svg class="hero-mark" viewBox="0 0 500 440" xmlns="http://www.w3.org/2000/svg" aria-label="Lupo Studios /L monogram" role="img" shape-rendering="geometricPrecision">
+      <path d="M240 0H330V350H500V440H247V175L103 440H0Z"/>
+    </svg>
+  </div>
+  <h1 class="hero-title">Brand Reference</h1>
+  <div class="hero-subtitle">Lupo Studios &middot; Consolidated &middot; 2026</div>
+  <div class="hero-scroll" aria-hidden="true">
+    <div class="hero-scroll-label">Scroll</div>
+    <div class="hero-scroll-line"></div>
+  </div>
+</header>
+
+<!-- ================================================
+     01 — BRAND IDENTITY
+================================================ -->
+<section class="identity-section" id="identity" aria-labelledby="identity-heading">
+  <div class="section-inner">
+    <div class="section-label reveal" id="identity-heading"><span class="dot"></span>01 &mdash; Brand identity</div>
+    <h2 class="section-headline reveal reveal-stagger-1">Craft-obsessed solo builder. Senior creative director energy.</h2>
+    <p class="section-subhead reveal reveal-stagger-2">Lupo Studios is the creative umbrella of Anthony Lupo. Not an agency. Not a SaaS company. A solo builder who uses AI to close the gap between ideas and execution.</p>
+
+    <div class="identity-grid">
+      <div class="identity-prose reveal reveal-stagger-3">
+        <p>Ten years in tech sales at Salesforce, Intuit, Samsara, Yext. That's the corporate version. The other version started in 2023 &mdash; teaching himself AI, building at the CLI at midnight, breaking and rebuilding workflows until they worked.</p>
+        <p>No CS degree. No bootcamp. Just <strong>consistent curiosity applied over time</strong>. Custom Claude skills, MCP server integrations, brand systems built through conversation, AI agent workflows across development, design, sales, and marketing.</p>
+
+        <div class="pullquote">The baseline is AI. The differentiator is taste. Velocity comes from the tools. Soul comes from the person.</div>
+
+        <p>The edge is not using AI &mdash; everyone can now. It's having logged enough reps to know what works, what's a dead end, and what to try first. The difference between someone who adopted a tool and someone you'd actually call.</p>
+        <p>A quote from a Stanford professor father-in-law: <strong>always question your assumptions.</strong> You don't need a technical background to be the person people trust on AI strategy. You need the willingness to learn, experiment, and fail softly.</p>
+      </div>
+
+      <div class="identity-meta reveal reveal-stagger-4">
+        <div class="meta-item">
+          <span class="meta-key">Owner</span>
+          <span class="meta-value">Anthony Lupo ("Lupo")</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-key">Brand</span>
+          <span class="meta-value">Lupo Studios</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-key">Personal Brand</span>
+          <span class="meta-value">humanlup</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-key">Tagline</span>
+          <span class="meta-value"><em>Still Human.</em></span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-key">Core Tools</span>
+          <span class="meta-value">Claude Opus 4.6 + Gemini Pro</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-key">GitHub</span>
+          <span class="meta-value"><code>localwolfpackai</code></span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-key">Social</span>
+          <span class="meta-value">X: @humanlup &middot; IG: @_lupo</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-key">Energy References</span>
+          <div class="energy-refs">
+            <span class="energy-tag">Apple</span>
+            <span class="energy-tag">Anthropic</span>
+            <span class="energy-tag">Virgil Abloh</span>
+            <span class="energy-tag">Dieter Rams</span>
+            <span class="energy-tag">Criterion Collection</span>
+            <span class="energy-tag">Eames Office</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================
+     02 — LOGO
+================================================ -->
+<section class="logo-section" id="logo" aria-labelledby="logo-heading">
+  <div class="section-inner">
+    <div class="section-label reveal" id="logo-heading"><span class="dot"></span>02 &mdash; Logo</div>
+    <h2 class="section-headline reveal reveal-stagger-1">The /L monogram. Nine vertices, zero ambiguity.</h2>
+    <p class="section-subhead reveal reveal-stagger-2">A merged monogram mark &mdash; one canonical SVG path governs every export, every render, every future placement. The geometry is math-based: integer-clean coordinates, uniform stem width, measurable diagonal.</p>
+
+    <div class="logo-layout">
+      <div class="logo-display reveal reveal-stagger-1" aria-hidden="true">
+        <svg viewBox="-40 -40 580 520" fill="none" xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+          <!-- Grid -->
+          <defs>
+            <pattern id="minor-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+              <line x1="0" y1="0" x2="0" y2="20" stroke="rgba(184,169,154,0.18)" stroke-width="0.5"/>
+              <line x1="0" y1="0" x2="20" y2="0" stroke="rgba(184,169,154,0.18)" stroke-width="0.5"/>
+            </pattern>
+            <pattern id="major-grid" width="100" height="100" patternUnits="userSpaceOnUse">
+              <line x1="0" y1="0" x2="0" y2="100" stroke="rgba(184,169,154,0.35)" stroke-width="0.6"/>
+              <line x1="0" y1="0" x2="100" y2="0" stroke="rgba(184,169,154,0.35)" stroke-width="0.6"/>
+            </pattern>
+          </defs>
+          <rect x="0" y="0" width="500" height="440" fill="url(#minor-grid)"/>
+          <rect x="0" y="0" width="500" height="440" fill="url(#major-grid)"/>
+          <rect x="0" y="0" width="500" height="440" fill="none" stroke="rgba(184,169,154,0.45)" stroke-width="0.6"/>
+
+          <!-- Guides -->
+          <line x1="-20" y1="0" x2="520" y2="0" stroke="rgba(184,169,154,0.5)" stroke-width="0.5" stroke-dasharray="4 6"/>
+          <line x1="-20" y1="175" x2="520" y2="175" stroke="rgba(184,169,154,0.5)" stroke-width="0.5" stroke-dasharray="4 6"/>
+          <line x1="-20" y1="350" x2="520" y2="350" stroke="rgba(184,169,154,0.5)" stroke-width="0.5" stroke-dasharray="4 6"/>
+          <line x1="-20" y1="440" x2="520" y2="440" stroke="rgba(184,169,154,0.5)" stroke-width="0.5" stroke-dasharray="4 6"/>
+          <line x1="0" y1="-20" x2="0" y2="460" stroke="rgba(184,169,154,0.5)" stroke-width="0.5" stroke-dasharray="4 6"/>
+          <line x1="240" y1="-20" x2="240" y2="460" stroke="rgba(184,169,154,0.5)" stroke-width="0.5" stroke-dasharray="4 6"/>
+          <line x1="330" y1="-20" x2="330" y2="460" stroke="rgba(184,169,154,0.5)" stroke-width="0.5" stroke-dasharray="4 6"/>
+          <line x1="500" y1="-20" x2="500" y2="460" stroke="rgba(184,169,154,0.5)" stroke-width="0.5" stroke-dasharray="4 6"/>
+
+          <!-- Diagonal guide -->
+          <line x1="295" y1="0" x2="50" y2="440" stroke="rgba(37,99,235,0.25)" stroke-width="0.5" stroke-dasharray="6 4"/>
+
+          <!-- Mark -->
+          <path d="M240 0H330V350H500V440H247V175L103 440H0Z" fill="var(--ink)" opacity="0.07"/>
+          <path d="M240 0H330V350H500V440H247V175L103 440H0Z" fill="none" stroke="var(--ink)" stroke-width="1.25"/>
+
+          <!-- Vertices -->
+          <circle cx="240" cy="0" r="4" fill="var(--accent)"/>
+          <circle cx="330" cy="0" r="4" fill="var(--accent)"/>
+          <circle cx="330" cy="350" r="4" fill="var(--accent)"/>
+          <circle cx="500" cy="350" r="4" fill="var(--accent)"/>
+          <circle cx="500" cy="440" r="4" fill="var(--accent)"/>
+          <circle cx="247" cy="440" r="4" fill="var(--accent)"/>
+          <circle cx="247" cy="175" r="4" fill="var(--accent)"/>
+          <circle cx="103" cy="440" r="4" fill="var(--accent)"/>
+          <circle cx="0" cy="440" r="4" fill="var(--accent)"/>
+
+          <!-- Dimension: stem width -->
+          <line x1="240" y1="-22" x2="330" y2="-22" stroke="var(--accent)" stroke-width="0.85"/>
+          <line x1="240" y1="-28" x2="240" y2="-16" stroke="var(--accent)" stroke-width="0.85"/>
+          <line x1="330" y1="-28" x2="330" y2="-16" stroke="var(--accent)" stroke-width="0.85"/>
+          <text x="285" y="-10" font-family="'Geist Mono', monospace" font-size="9" fill="var(--accent)" text-anchor="middle">90</text>
+
+          <!-- Dimension: height -->
+          <line x1="520" y1="0" x2="520" y2="440" stroke="var(--accent)" stroke-width="0.85"/>
+          <line x1="514" y1="0" x2="526" y2="0" stroke="var(--accent)" stroke-width="0.85"/>
+          <line x1="514" y1="440" x2="526" y2="440" stroke="var(--accent)" stroke-width="0.85"/>
+          <text x="532" y="224" font-family="'Geist Mono', monospace" font-size="9" fill="var(--accent)" text-anchor="start" transform="rotate(90,532,224)">440</text>
+
+          <!-- Angle annotation -->
+          <text x="145" y="345" font-family="'Geist Mono', monospace" font-size="9" fill="var(--accent)" opacity="0.85">61.4&#176;</text>
+          <path d="M 247 175 Q 220 195 230 220" fill="none" stroke="var(--accent)" stroke-width="0.6" opacity="0.5"/>
+        </svg>
+      </div>
+
+      <div class="reveal reveal-stagger-2">
+        <ul class="logo-specs">
+          <li class="spec-item">
+            <span class="spec-key">Canonical Path</span>
+            <span class="spec-value"><code>M240 0H330V350H500V440H247V175L103 440H0Z</code></span>
+          </li>
+          <li class="spec-item">
+            <span class="spec-key">ViewBox</span>
+            <span class="spec-value">500 &times; 440</span>
+          </li>
+          <li class="spec-item">
+            <span class="spec-key">Vertices</span>
+            <span class="spec-value"><span class="accent">9</span> integer-clean coordinates</span>
+          </li>
+          <li class="spec-item">
+            <span class="spec-key">Stem Width</span>
+            <span class="spec-value"><span class="accent">90px</span> uniform</span>
+          </li>
+          <li class="spec-item">
+            <span class="spec-key">Diagonal Angle</span>
+            <span class="spec-value"><span class="accent">61.4&deg;</span> &middot; 0.09&deg; deviation</span>
+          </li>
+          <li class="spec-item">
+            <span class="spec-key">SVG Rendering</span>
+            <span class="spec-value"><code>shape-rendering="geometricPrecision"</code></span>
+          </li>
+          <li class="spec-item">
+            <span class="spec-key">Source Files</span>
+            <span class="spec-value"><code>brand/_logo/</code></span>
+          </li>
+          <li class="spec-item">
+            <span class="spec-key">Generation</span>
+            <span class="spec-value"><code>generate-logo-kit.py</code> (Pillow)</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Logo usage examples -->
+    <div class="logo-usage-grid reveal reveal-stagger-3">
+      <div class="logo-usage-card">
+        <svg width="56" height="auto" viewBox="0 0 500 440" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" shape-rendering="geometricPrecision">
+          <path d="M240 0H330V350H500V440H247V175L103 440H0Z" fill="#1A1816"/>
+        </svg>
+        <span class="logo-usage-label">Light background</span>
+      </div>
+      <div class="logo-usage-card dark-bg">
+        <svg width="56" height="auto" viewBox="0 0 500 440" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" shape-rendering="geometricPrecision">
+          <path d="M240 0H330V350H500V440H247V175L103 440H0Z" fill="#FFFFFF"/>
+        </svg>
+        <span class="logo-usage-label">Dark background</span>
+      </div>
+      <div class="logo-usage-card" style="background: var(--accent); border-color: rgba(37, 99, 235, 0.2);">
+        <svg width="56" height="auto" viewBox="0 0 500 440" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" shape-rendering="geometricPrecision">
+          <path d="M240 0H330V350H500V440H247V175L103 440H0Z" fill="#FFFFFF"/>
+        </svg>
+        <span class="logo-usage-label" style="color: rgba(255,255,255,0.6);">Brand accent</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================
+     03 — COLOR SYSTEM
+================================================ -->
+<section class="color-section" id="colors" aria-labelledby="colors-heading">
+  <div class="section-inner">
+    <div class="section-label reveal" id="colors-heading"><span class="dot"></span>03 &mdash; Color system</div>
+    <h2 class="section-headline reveal reveal-stagger-1">OKLCH for perceptual uniformity. Hex for quick reference.</h2>
+    <p class="section-subhead reveal reveal-stagger-2">All colors defined as CSS custom properties via Tailwind v4. Production code uses <code style="font-family:'Geist Mono',monospace;font-size:0.85em;background:var(--signal-soft);color:var(--accent);padding:0.1em 0.35em;border-radius:3px;">oklch()</code> values for perceptual accuracy across light and dark modes. No purple as primary. High contrast. Generous whitespace.</p>
+
+    <!-- Brand Palette -->
+    <div class="color-grid reveal reveal-stagger-2">
+      <div class="color-card">
+        <div class="color-swatch" style="background: #82C8E5;"></div>
+        <div class="color-info">
+          <span class="color-name">Sky Blue</span>
+          <span class="color-role">Primary accent, links, active states, interactive elements</span>
+          <div class="color-values">
+            <span class="color-chip">#82C8E5</span>
+            <span class="color-chip">oklch(80.5% 0.078 220)</span>
+          </div>
+        </div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background: #2563EB;"></div>
+        <div class="color-info">
+          <span class="color-name">Blue Accent</span>
+          <span class="color-role">High-emphasis CTAs, strong interactive elements</span>
+          <div class="color-values">
+            <span class="color-chip">#2563EB</span>
+            <span class="color-chip">oklch(55% 0.22 264)</span>
+          </div>
+        </div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background: #A0C8DB;"></div>
+        <div class="color-info">
+          <span class="color-name">Soft Blue</span>
+          <span class="color-role">Subtle highlights, card backgrounds, info states</span>
+          <div class="color-values">
+            <span class="color-chip">#A0C8DB</span>
+            <span class="color-chip">oklch(81% 0.06 220)</span>
+          </div>
+        </div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background: #E5AE63;"></div>
+        <div class="color-info">
+          <span class="color-name">Amber</span>
+          <span class="color-role">Warnings, caution, gradient start, warm emphasis</span>
+          <div class="color-values">
+            <span class="color-chip">#E5AE63</span>
+            <span class="color-chip">oklch(78% 0.14 75)</span>
+          </div>
+        </div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background: #D5EBB6;"></div>
+        <div class="color-info">
+          <span class="color-name">Sage</span>
+          <span class="color-role">Success states, positive indicators, confirmations</span>
+          <div class="color-values">
+            <span class="color-chip">#D5EBB6</span>
+            <span class="color-chip">oklch(89% 0.08 130)</span>
+          </div>
+        </div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background: #C13820;"></div>
+        <div class="color-info">
+          <span class="color-name">Deep Red</span>
+          <span class="color-role">Errors, destructive actions, gradient end</span>
+          <div class="color-values">
+            <span class="color-chip">#C13820</span>
+            <span class="color-chip">oklch(48% 0.18 25)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Neutrals -->
+    <div class="color-grid reveal reveal-stagger-3" style="margin-top: 1.25rem;">
+      <div class="color-card">
+        <div class="color-swatch" style="background: #262626;"></div>
+        <div class="color-info">
+          <span class="color-name">Matte Black</span>
+          <span class="color-role">Headings, primary text in light mode</span>
+          <div class="color-values">
+            <span class="color-chip">#262626</span>
+            <span class="color-chip">oklch(21.6% 0.003 264)</span>
+          </div>
+        </div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background: #909EAE;"></div>
+        <div class="color-info">
+          <span class="color-name">Pewter</span>
+          <span class="color-role">Muted labels, metadata, timestamps</span>
+          <div class="color-values">
+            <span class="color-chip">#909EAE</span>
+            <span class="color-chip">oklch(68.5% 0.025 250)</span>
+          </div>
+        </div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background: #CBCBCB;"></div>
+        <div class="color-info">
+          <span class="color-name">Cool Gray</span>
+          <span class="color-role">Secondary text, disabled states, placeholders</span>
+          <div class="color-values">
+            <span class="color-chip">#CBCBCB</span>
+            <span class="color-chip">oklch(83.5% 0.003 264)</span>
+          </div>
+        </div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background: #E5E5E5;"></div>
+        <div class="color-info">
+          <span class="color-name">Neutral</span>
+          <span class="color-role">Borders, dividers, subtle backgrounds</span>
+          <div class="color-values">
+            <span class="color-chip">#E5E5E5</span>
+            <span class="color-chip">oklch(92% 0.002 264)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gradient -->
+    <div class="reveal reveal-stagger-4">
+      <div class="gradient-bar">
+        <div class="gradient-bar-inner" style="background: linear-gradient(135deg, #E5AE63, #C13820);"></div>
+      </div>
+      <div class="gradient-label">Amber to Deep Red &mdash; urgency indicators, deadline markers, hero gradients</div>
+    </div>
+
+    <!-- Color Rules -->
+    <div class="color-rules reveal reveal-stagger-5">
+      <div class="color-rule">
+        <svg class="color-rule-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+        <span><strong style="color:var(--ink);font-weight:500;">Sky Blue</strong> is the signature color for links, active states, and primary actions</span>
+      </div>
+      <div class="color-rule">
+        <svg class="color-rule-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+        <span><strong style="color:var(--ink);font-weight:500;">Blue Accent</strong> for high-emphasis CTAs where Sky Blue reads too soft</span>
+      </div>
+      <div class="color-rule">
+        <svg class="color-rule-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+        <span>All text meets <strong style="color:var(--ink);font-weight:500;">WCAG AA</strong> &mdash; 4.5:1 for body, 3:1 for large text</span>
+      </div>
+      <div class="color-rule">
+        <svg class="color-rule-icon avoid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        <span><strong style="color:var(--deep-red);font-weight:500;">Never use purple</strong> as a primary or accent color</span>
+      </div>
+      <div class="color-rule">
+        <svg class="color-rule-icon avoid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        <span>Avoid pure <code style="font-family:'Geist Mono',monospace;font-size:0.85em;">#000</code> and <code style="font-family:'Geist Mono',monospace;font-size:0.85em;">#fff</code> &mdash; use tinted neutrals instead</span>
+      </div>
+      <div class="color-rule">
+        <svg class="color-rule-icon avoid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        <span>No neon or oversaturated colors on large surfaces</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================
+     04 — TYPOGRAPHY
+================================================ -->
+<section class="type-section" id="typography" aria-labelledby="type-heading">
+  <div class="section-inner">
+    <div class="section-label reveal" id="type-heading"><span class="dot"></span>04 &mdash; Typography</div>
+    <h2 class="section-headline reveal reveal-stagger-1">Three families. Two per page. Type as a design element.</h2>
+    <p class="section-subhead reveal reveal-stagger-2">Instrument Serif for editorial headlines. DM Sans for comfortable body text. Geist Mono for system labels and code. Never more than two families plus mono on a single page.</p>
+
+    <!-- Font specimens -->
+    <div class="type-stack reveal reveal-stagger-2">
+      <div class="type-card">
+        <div class="type-specimen serif">The work's all here.</div>
+        <div class="type-meta">
+          <span class="type-meta-name">Instrument Serif</span>
+          <span class="type-meta-use">Headlines, hero moments, pullquotes. Editorial warmth, not corporate serif.</span>
+        </div>
+      </div>
+      <div class="type-card">
+        <div class="type-specimen sans">Consistent curiosity creates opportunity.</div>
+        <div class="type-meta">
+          <span class="type-meta-name">DM Sans</span>
+          <span class="type-meta-use">Body text, descriptions, navigation. Clean geometry, comfortable reading.</span>
+        </div>
+      </div>
+      <div class="type-card">
+        <div class="type-specimen mono">brand-reference</div>
+        <div class="type-meta">
+          <span class="type-meta-name">Geist Mono</span>
+          <span class="type-meta-use">Code blocks, labels, metadata, section markers. System and technical contexts.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Type scale -->
+    <div class="type-scale reveal reveal-stagger-3">
+      <div class="type-scale-row">
+        <span class="type-scale-label">4xl</span>
+        <span class="type-scale-sample" style="font-size: clamp(2.5rem, 5vw, 3.75rem);">Headline</span>
+      </div>
+      <div class="type-scale-row">
+        <span class="type-scale-label">3xl</span>
+        <span class="type-scale-sample" style="font-size: clamp(1.85rem, 4vw, 3rem);">Section title</span>
+      </div>
+      <div class="type-scale-row">
+        <span class="type-scale-label">2xl</span>
+        <span class="type-scale-sample" style="font-size: clamp(1.5rem, 3vw, 2.25rem);">Subsection</span>
+      </div>
+      <div class="type-scale-row">
+        <span class="type-scale-label">xl</span>
+        <span class="type-scale-sample" style="font-size: 1.25rem;">Card heading</span>
+      </div>
+      <div class="type-scale-row">
+        <span class="type-scale-label">base</span>
+        <span class="type-scale-sample" style="font-size: 1rem; font-family: 'DM Sans', sans-serif; font-weight: 300; line-height: 1.7;">Body text reads at base size with DM Sans at weight 300.</span>
+      </div>
+      <div class="type-scale-row">
+        <span class="type-scale-label">sm</span>
+        <span class="type-scale-sample" style="font-size: 0.875rem; font-family: 'DM Sans', sans-serif; font-weight: 300;">Small text and secondary information</span>
+      </div>
+      <div class="type-scale-row">
+        <span class="type-scale-label">xs</span>
+        <span class="type-scale-sample" style="font-size: 0.75rem; font-family: 'Geist Mono', monospace; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted);">Labels and metadata</span>
+      </div>
+    </div>
+
+    <!-- Type rules -->
+    <div class="type-rules-grid reveal reveal-stagger-4">
+      <div class="type-rule-card">
+        <strong>Headings</strong>
+        <code style="font-family:'Geist Mono',monospace;font-size:0.8em;">font-bold tracking-tight</code>. Display font for hero moments. Use <code style="font-family:'Geist Mono',monospace;font-size:0.8em;">text-balance</code> to prevent awkward breaks.
+      </div>
+      <div class="type-rule-card">
+        <strong>Body text</strong>
+        1.5 line height, Inter/DM Sans. Max reading width <code style="font-family:'Geist Mono',monospace;font-size:0.8em;">65ch</code>. Minimum font size 8px.
+      </div>
+      <div class="type-rule-card">
+        <strong>Code / Mono</strong>
+        <code style="font-family:'Geist Mono',monospace;font-size:0.8em;">text-sm</code> with <code style="font-family:'Geist Mono',monospace;font-size:0.8em;">font-feature-settings: "zero"</code> for distinguishable zeroes.
+      </div>
+      <div class="type-rule-card">
+        <strong>Anti-aliasing</strong>
+        <code style="font-family:'Geist Mono',monospace;font-size:0.8em;">-webkit-font-smoothing: antialiased</code> globally. Required.
+      </div>
+      <div class="type-rule-card">
+        <strong>Fluid display</strong>
+        Use <code style="font-family:'Geist Mono',monospace;font-size:0.8em;">clamp()</code> for all display text. No fixed <code style="font-family:'Geist Mono',monospace;font-size:0.8em;">font-size</code> for hero elements.
+      </div>
+      <div class="type-rule-card">
+        <strong>Letter-spacing</strong>
+        Tighten headings <code style="font-family:'Geist Mono',monospace;font-size:0.8em;">-0.03em</code>. Loosen body <code style="font-family:'Geist Mono',monospace;font-size:0.8em;">1.6</code> line-height. These are design tools, not defaults.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================
+     05 — COMPONENT PHILOSOPHY
+================================================ -->
+<section class="component-section" id="components" aria-labelledby="components-heading">
+  <div class="section-inner">
+    <div class="section-label reveal" id="components-heading"><span class="dot"></span>05 &mdash; Components &amp; motion</div>
+    <h2 class="section-headline reveal reveal-stagger-1">Handcrafted, not templated. Editorial, not dashboard.</h2>
+    <p class="section-subhead reveal reveal-stagger-2">This is a solo creative studio. Every project should feel intentional. shadcn/ui and Radix are functional starting points, not design systems. Always restyle to match the project's personality.</p>
+
+    <div class="philosophy-grid">
+      <div>
+        <ul class="principle-list reveal reveal-stagger-2">
+          <li class="principle-item">
+            <span class="principle-title">Grid is the anchor</span>
+            <span class="principle-desc">8pt spacing scale and 12-column layout for the skeleton. Container logic stays strict to prevent breakage. Components are the experimental sandbox inside grid cells.</span>
+          </li>
+          <li class="principle-item">
+            <span class="principle-title">Vary the pattern</span>
+            <span class="principle-desc">Never use the same card style twice on one page. Mix full-bleed sections with contained content. Use asymmetric column spans (3/9, 4/8, 5/7) instead of defaulting to equal splits.</span>
+          </li>
+          <li class="principle-item">
+            <span class="principle-title">Type as design element</span>
+            <span class="principle-desc">Oversized headings, mixed weights, creative line breaks. Hero moments use multiple expressive tactics to break from predictable patterns.</span>
+          </li>
+          <li class="principle-item">
+            <span class="principle-title">Motion with purpose</span>
+            <span class="principle-desc">Scroll-triggered reveals, staggered entrances, parallax. Hover means shape change, not just color swap. Elements should arrive, not appear.</span>
+          </li>
+          <li class="principle-item">
+            <span class="principle-title">Glass panel as default surface</span>
+            <span class="principle-desc"><code style="font-family:'Geist Mono',monospace;font-size:0.82em;">rgba(255, 253, 249, 0.6)</code> + <code style="font-family:'Geist Mono',monospace;font-size:0.82em;">backdrop-filter: blur(20px)</code> + subtle border. Depth from elevation, not noise or grain.</span>
+          </li>
+          <li class="principle-item">
+            <span class="principle-title">Borders tell the story</span>
+            <span class="principle-desc">Active = stronger border. Resting = barely visible. Hover = intermediate. Vary opacity and color for state, not just background changes.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="reveal reveal-stagger-3">
+        <h3 style="font-family:'Geist Mono',monospace;font-size:0.58rem;font-weight:400;letter-spacing:0.2em;text-transform:uppercase;color:var(--deep-red);margin-bottom:1rem;">What to avoid</h3>
+        <ul class="avoid-list">
+          <li class="avoid-item">
+            <svg class="avoid-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Cookie-cutter SaaS templates and "corporate clean" aesthetic
+          </li>
+          <li class="avoid-item">
+            <svg class="avoid-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Identical card grids repeated across sections
+          </li>
+          <li class="avoid-item">
+            <svg class="avoid-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Generic hero + 3-feature-cards + pricing table layout
+          </li>
+          <li class="avoid-item">
+            <svg class="avoid-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Unmodified shadcn/ui defaults without visual customization
+          </li>
+          <li class="avoid-item">
+            <svg class="avoid-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Neon glows, circuit lines, dark-mode hacker cosplay, purple accents
+          </li>
+          <li class="avoid-item">
+            <svg class="avoid-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Using <code style="font-family:'Geist Mono',monospace;font-size:0.82em;">ease</code> or <code style="font-family:'Geist Mono',monospace;font-size:0.82em;">ease-in-out</code> as default timing functions
+          </li>
+          <li class="avoid-item">
+            <svg class="avoid-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Noise textures or <code style="font-family:'Geist Mono',monospace;font-size:0.82em;">feTurbulence</code> overlays on full surfaces
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Easing functions -->
+    <div class="easing-table reveal reveal-stagger-4">
+      <h3 style="font-family:'Geist Mono',monospace;font-size:0.58rem;font-weight:400;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:1.5rem;">Physics easing</h3>
+      <div class="easing-row">
+        <span class="easing-name">Expo out</span>
+        <span class="easing-value">cubic-bezier(0.16, 1, 0.3, 1)</span>
+        <span class="easing-use">Most common. Snappy feel. Elements entering view, reveals, hover.</span>
+      </div>
+      <div class="easing-row">
+        <span class="easing-name">Back out</span>
+        <span class="easing-value">cubic-bezier(0.175, 0.885, 0.32, 1.275)</span>
+        <span class="easing-use">Slight overshoot. Playful entries, bouncy interactions.</span>
+      </div>
+      <div class="easing-row">
+        <span class="easing-name">Quint in-out</span>
+        <span class="easing-value">cubic-bezier(0.83, 0, 0.17, 1)</span>
+        <span class="easing-use">Smooth symmetrical. State changes, toggles, theme transitions.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================
+     06 — VOICE & TONE
+================================================ -->
+<section class="voice-section" id="voice" aria-labelledby="voice-heading">
+  <div class="section-inner">
+    <div class="section-label reveal" id="voice-heading"><span class="dot"></span>06 &mdash; Voice &amp; tone</div>
+    <h2 class="section-headline reveal reveal-stagger-1">Would a real person say this to a friend over a beer?</h2>
+    <p class="section-subhead reveal reveal-stagger-2">If not, rewrite it. The one-line test for every piece of copy. Senior Creative Director energy, coffee-shop delivery. Never performing expertise. Just showing the work.</p>
+
+    <div class="voice-layout">
+      <div class="reveal reveal-stagger-2">
+        <div class="voice-prose">
+          <p><strong>Warm but not soft.</strong> Confident but not loud. Specific but not technical for its own sake. Funny when it lands. Silent when it doesn't.</p>
+          <p>Share the process, not just the advice. Adjust the tone for the audience. For non-technical folks: metaphors, side-by-sides, plain English. For those with tech knowledge: what worked, how it's structured, how to repeat it. Be honest about your level. You're not a backend dev. You're someone who figured out it wasn't that hard &mdash; and can show exactly how.</p>
+          <p>Observations over opinions. Show the thing. If you have to explain why it's interesting, cut the line. Specificity is confidence. "I build things" is weak. "The commit message is the liner note" earns its place.</p>
+        </div>
+
+        <div class="voice-principle">
+          <div class="voice-principle-title">Curiosity as Discipline</div>
+          <div class="voice-principle-desc">Technical barriers are curiosity barriers. Lead with what you're learning, not what you've mastered. Experimentation is a daily practice, not a personality trait.</div>
+        </div>
+
+        <div class="voice-principle" style="margin-top: 1rem;">
+          <div class="voice-principle-title">The Radius</div>
+          <div class="voice-principle-desc">No niche. A radius. AI Strategy, Design, Art, Culture &mdash; the intersection is where the work gets interesting. Connecting disparate things is the method.</div>
+        </div>
+
+        <div class="voice-principle" style="margin-top: 1rem;">
+          <div class="voice-principle-title">The Human Baseline</div>
+          <div class="voice-principle-desc">AI is the baseline. The differentiator is curation. The 1% of output that actually looks, feels, and functions like high-end human design. AI provides velocity. You provide taste and direction.</div>
+        </div>
+      </div>
+
+      <div class="voice-sidebar reveal reveal-stagger-3">
+        <div class="voice-sidebar-section">
+          <h4>Tone spectrum</h4>
+          <div class="tone-tags">
+            <span class="tone-tag">Warm</span>
+            <span class="tone-tag">Confident</span>
+            <span class="tone-tag">Specific</span>
+            <span class="tone-tag">Relaxed</span>
+            <span class="tone-tag">Direct</span>
+            <span class="tone-tag">Curious</span>
+          </div>
+        </div>
+
+        <div class="voice-sidebar-section">
+          <h4>Sentence-level rules</h4>
+          <ul class="sentence-rules">
+            <li>Short sentences hit harder. Use them on purpose.</li>
+            <li>Contractions mandatory. You're, we'll, it's.</li>
+            <li>If it can be cut in half, cut it.</li>
+            <li>No jargon without a plain-English translation nearby.</li>
+            <li>Every line earns its place or it doesn't stay.</li>
+            <li>Metaphors are load-bearing. They're how ideas travel.</li>
+          </ul>
+        </div>
+
+        <div class="voice-sidebar-section">
+          <h4>Banned words</h4>
+          <ul class="banned-list">
+            <li>revolutionary</li>
+            <li>game-changing</li>
+            <li>unlock potential</li>
+            <li>delve</li>
+            <li>forge / nexus</li>
+            <li>synergy / seamless</li>
+            <li>landscape</li>
+            <li>leverage (say "using")</li>
+            <li>robust / pivotal</li>
+            <li>deep dive / journey</li>
+          </ul>
+        </div>
+
+        <div class="voice-sidebar-section">
+          <h4>Banned aesthetics</h4>
+          <ul class="banned-list">
+            <li>purple gradients</li>
+            <li>generic sans-serif on black</li>
+            <li>"future" as a visual direction</li>
+            <li>neon glows / circuit lines</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================
+     07 — WORKSPACE STRUCTURE
+================================================ -->
+<section class="workspace-section" id="workspace" aria-labelledby="workspace-heading">
+  <div class="section-inner">
+    <div class="section-label reveal" id="workspace-heading"><span class="dot"></span>07 &mdash; Workspace</div>
+    <h2 class="section-headline reveal reveal-stagger-1">Numbered lanes, kebab-case, one level deep.</h2>
+    <p class="section-subhead reveal reveal-stagger-2">Projects are organized in numbered lanes using Johnny Decimal conventions. Files are kebab-case. Directories sort-first in every tool. If you don't know where something goes, it lands in 00-inbox.</p>
+
+    <div class="workspace-grid reveal reveal-stagger-2">
+      <div class="workspace-card">
+        <div class="workspace-card-title">Projects</div>
+        <ul class="dir-tree">
+          <li><span class="dir-name">~/Projects/</span></li>
+          <li class="indent-1"><span class="dir-name">00-inbox/</span><span class="dir-desc">Unsorted, figure out later</span></li>
+          <li class="indent-1"><span class="dir-name">01-experiments/</span><span class="dir-desc">Code tinkering, learning</span></li>
+          <li class="indent-1"><span class="dir-name">02-clients/</span><span class="dir-desc">Friend/freelance projects</span></li>
+          <li class="indent-1"><span class="dir-name">03-plants/</span><span class="dir-desc">Animated film</span></li>
+          <li class="indent-1"><span class="dir-name">04-inspo/</span><span class="dir-desc">Visual inspiration</span></li>
+          <li class="indent-1"><span class="dir-name">05-showcase/</span><span class="dir-desc">Polished portfolio pieces</span></li>
+          <li class="indent-1"><span class="dir-name">06-remix/</span><span class="dir-desc">Visual revamps</span></li>
+        </ul>
+        <div class="workspace-note">One level of nesting per lane. Each project is a folder, kebab-case: <code style="font-family:'Geist Mono',monospace;font-size:0.8em;">black-market-barbershop/</code></div>
+      </div>
+
+      <div class="workspace-card">
+        <div class="workspace-card-title">Agents</div>
+        <ul class="dir-tree">
+          <li><span class="dir-name">~/Agents/</span></li>
+          <li class="indent-1"><span class="dir-name">ai-hub/</span><span class="dir-desc">Skills/MCP browser</span></li>
+          <li class="indent-1"><span class="dir-name">AI-Insights/</span><span class="dir-desc">Research + playbooks</span></li>
+          <li class="indent-1"><span class="dir-name">brand/</span><span class="dir-desc">This brand system</span></li>
+          <li class="indent-1"><span class="dir-name">component-library/</span><span class="dir-desc">UI component stash</span></li>
+          <li class="indent-1"><span class="dir-name">ObsidianVault/</span><span class="dir-desc">Knowledge base</span></li>
+          <li class="indent-1"><span class="dir-name">remote-rules/</span><span class="dir-desc">Portable AI rules</span></li>
+          <li class="indent-1"><span class="dir-name">tools/</span><span class="dir-desc">CLI tools, auto-organizer</span></li>
+        </ul>
+        <div class="workspace-note">Multi-project workspace hub. Each subdirectory is independent with its own runtime and concerns.</div>
+      </div>
+    </div>
+
+    <!-- Tech stack -->
+    <h3 style="font-family:'Geist Mono',monospace;font-size:0.58rem;font-weight:400;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-top:3rem;margin-bottom:0.5rem;" class="reveal reveal-stagger-3">Preferred stack</h3>
+    <div class="stack-grid reveal reveal-stagger-4">
+      <div class="stack-item">
+        <div class="stack-item-name">Astro / Next.js</div>
+        <div class="stack-item-role">Framework</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-item-name">TypeScript</div>
+        <div class="stack-item-role">Language</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-item-name">Tailwind v4</div>
+        <div class="stack-item-role">Styling</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-item-name">shadcn/ui</div>
+        <div class="stack-item-role">Components</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-item-name">Radix</div>
+        <div class="stack-item-role">Primitives</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-item-name">Framer Motion</div>
+        <div class="stack-item-role">Animation</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-item-name">Lucide</div>
+        <div class="stack-item-role">Icons</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-item-name">Zustand</div>
+        <div class="stack-item-role">Client state</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-item-name">React Query</div>
+        <div class="stack-item-role">Server state</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-item-name">Zod</div>
+        <div class="stack-item-role">Validation</div>
+      </div>
+    </div>
+
+    <!-- Authority hierarchy -->
+    <div class="reveal reveal-stagger-5" style="margin-top:3rem;">
+      <h3 style="font-family:'Geist Mono',monospace;font-size:0.58rem;font-weight:400;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;">Authority hierarchy</h3>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.75rem;font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:400;color:var(--ink-soft);">
+        <span style="padding:0.5em 1em;background:var(--glass-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border:1px solid var(--accent);border-radius:999px;color:var(--accent);font-weight:500;">SYSTEM.md</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        <span style="padding:0.5em 1em;background:var(--glass-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border:1px solid var(--glass-border);border-radius:999px;">design-system.md</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        <span style="padding:0.5em 1em;background:var(--glass-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border:1px solid var(--glass-border);border-radius:999px;">input.css</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        <span style="padding:0.5em 1em;background:var(--glass-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border:1px solid var(--glass-border);border-radius:999px;opacity:0.6;">Obsidian vault</span>
+      </div>
+      <div style="font-size:0.82rem;font-weight:300;color:var(--muted);margin-top:0.75rem;line-height:1.6;">Design tokens flow one way: spec to CSS to consuming projects. Changes start in the spec, then propagate.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================
+     FOOTER
+================================================ -->
+<footer class="site-footer">
+  <div class="footer-divider" aria-hidden="true"></div>
+  <div class="footer-mark" aria-hidden="true">
+    <svg viewBox="0 0 500 440" xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+      <path d="M240 0H330V350H500V440H247V175L103 440H0Z"/>
+    </svg>
+  </div>
+  <div class="footer-brand">Lupo Studios &middot; Brand Reference &middot; 2026</div>
+  <div class="footer-tagline">Still Human.</div>
+  <div class="footer-credit">Consolidated by Claude &middot; Opus 4.6</div>
+</footer>
+
+<!-- ================================================
+     SCRIPTS
+================================================ -->
+<script>
+(function() {
+  // NOTE: IntersectionObserver for scroll reveals
+  var elements = document.querySelectorAll('.reveal, .section-label');
+  var options = { threshold: 0.12, rootMargin: '0px 0px -40px 0px' };
+  var observer = new IntersectionObserver(function(entries) {
+    for (var i = 0; i < entries.length; i++) {
+      if (entries[i].isIntersecting) {
+        entries[i].target.classList.add('visible');
+      }
+    }
+  }, options);
+  for (var i = 0; i < elements.length; i++) {
+    observer.observe(elements[i]);
+  }
+})();
+
+// NOTE: Accurate stroke-dasharray from path length for draw animation
+(function() {
+  var heroPath = document.querySelector('.hero-mark path');
+  if (heroPath) {
+    var len = heroPath.getTotalLength();
+    heroPath.style.strokeDasharray = len;
+    heroPath.style.strokeDashoffset = len;
+    var s = document.createElement('style');
+    s.textContent =
+      '@keyframes strokeDraw { to { stroke-dashoffset: 0; } }' +
+      '.hero-mark path { stroke-dasharray: ' + len + '; stroke-dashoffset: ' + len + '; }';
+    document.head.appendChild(s);
+  }
+})();
+
+// NOTE: Smooth scroll offset for fixed nav
+document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    var target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      var offset = 72;
+      var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+    }
+  });
+});
+</script>
+
+</body>
+</html>

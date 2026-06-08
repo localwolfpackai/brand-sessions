@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lupo Studios — /L Monogram Identity</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
+
+  :root {
+    --bg: #0a0a0a;
+    --fg: #e8e4df;
+    --accent: #c82800;
+    --muted: #3a3632;
+    --warm: #b8a99a;
+    --surface: #141210;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--muted) var(--bg);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
+
+  /* ═══════════════════════════════════
+     HERO — FULL VIEWPORT CANVAS
+  ═══════════════════════════════════ */
+  #hero {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  #hero-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 30%, var(--bg) 80%);
+  }
+
+  .hero-text {
+    position: absolute;
+    z-index: 3;
+    text-align: center;
+    pointer-events: none;
+    opacity: 1;
+    animation: fadeUp 1.2s ease 3.5s both;
+  }
+
+  .hero-text .studio-name {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--warm);
+    margin-bottom: 0.5em;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+  }
+
+  /* ═══════════════════════════════════
+     SECTIONS — SHARED
+  ═══════════════════════════════════ */
+  section {
+    position: relative;
+    padding: clamp(4rem, 10vw, 8rem) clamp(2rem, 8vw, 6rem);
+  }
+
+  .section-label {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 3rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 2rem;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .section-heading {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    line-height: 1.05;
+    font-weight: 400;
+    color: var(--fg);
+    max-width: 14ch;
+    margin-bottom: 2rem;
+  }
+
+  .section-body {
+    font-size: clamp(0.85rem, 1.2vw, 1rem);
+    line-height: 1.7;
+    color: var(--warm);
+    max-width: 50ch;
+  }
+
+  /* ═══════════════════════════════════
+     CONSTRUCTION — ANATOMY
+  ═══════════════════════════════════ */
+  #anatomy {
+    background: var(--surface);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  @media (max-width: 768px) {
+    #anatomy { grid-template-columns: 1fr; }
+  }
+
+  .anatomy-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .anatomy-svg-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    aspect-ratio: 500/440;
+  }
+
+  .anatomy-svg-wrap svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .anatomy-annotation {
+    position: absolute;
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .anatomy-annotation::before {
+    content: '';
+    position: absolute;
+    background: var(--accent);
+    opacity: 0.4;
+  }
+
+  .ann-diagonal { top: 25%; left: -15%; }
+  .ann-diagonal::before { width: 30px; height: 1px; right: -35px; top: 50%; }
+
+  .ann-vertical { top: 10%; right: -20%; }
+  .ann-vertical::before { width: 1px; height: 30px; left: -15px; top: -5px; }
+
+  .ann-foot { bottom: 5%; right: -10%; }
+  .ann-foot::before { width: 30px; height: 1px; left: -35px; top: 50%; }
+
+  /* ═══════════════════════════════════
+     PALETTE
+  ═══════════════════════════════════ */
+  #palette {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .palette-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2px;
+    margin-top: 3rem;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  @media (max-width: 600px) {
+    .palette-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .swatch {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1rem;
+    position: relative;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+  }
+
+  .swatch:hover {
+    transform: scale(1.05);
+    z-index: 2;
+  }
+
+  .swatch-name {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.8;
+  }
+
+  .swatch-hex {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.55rem;
+    opacity: 0.5;
+    margin-top: 0.25rem;
+  }
+
+  .swatch.dark-text { color: var(--bg); }
+  .swatch.light-text { color: var(--fg); }
+
+  /* ═══════════════════════════════════
+     TYPOGRAPHY
+  ═══════════════════════════════════ */
+  #typography {
+    background: var(--surface);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .type-showcase {
+    margin-top: 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+  }
+
+  .type-specimen {
+    border-bottom: 1px solid var(--muted);
+    padding-bottom: 2rem;
+  }
+
+  .type-specimen-label {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .type-display {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(3rem, 9vw, 7rem);
+    line-height: 1;
+    color: var(--fg);
+  }
+
+  .type-display em {
+    color: var(--accent);
+  }
+
+  .type-mono {
+    font-family: 'Geist Mono', monospace;
+    font-size: clamp(1.2rem, 3vw, 2rem);
+    line-height: 1.4;
+    color: var(--warm);
+    font-weight: 300;
+  }
+
+  .type-body-sample {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+    line-height: 1.8;
+    color: var(--warm);
+    max-width: 60ch;
+    font-weight: 300;
+  }
+
+  /* ═══════════════════════════════════
+     MONOGRAM VARIATIONS
+  ═══════════════════════════════════ */
+  #variations {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .variations-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 3rem;
+  }
+
+  @media (max-width: 600px) {
+    .variations-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  .variation-cell {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .variation-cell:hover {
+    z-index: 2;
+    transform: scale(1.02);
+  }
+
+  .variation-cell svg {
+    width: 45%;
+    height: auto;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .variation-cell:hover svg {
+    transform: scale(1.1);
+  }
+
+  .variation-label {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .variation-cell:hover .variation-label { opacity: 0.7; }
+
+  /* ═══════════════════════════════════
+     FOOTER
+  ═══════════════════════════════════ */
+  footer {
+    padding: 3rem clamp(2rem, 8vw, 6rem);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--muted);
+  }
+
+  footer span {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ═══════════════════════════════════
+     SCROLL REVEALS
+  ═══════════════════════════════════ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════ HERO ════════════ -->
+<div id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-overlay"></div>
+  <div class="hero-text">
+    <div class="studio-name">Lupo Studios</div>
+  </div>
+</div>
+
+<!-- ════════════ ANATOMY ════════════ -->
+<section id="anatomy">
+  <div class="reveal">
+    <div class="section-label">01 — Construction</div>
+    <h2 class="section-heading">Anatomy of the /L</h2>
+    <p class="section-body">
+      A single continuous path. The A's diagonal ascender flows directly into
+      the L's vertical stem — no break, no join. One gesture, two letters,
+      one mark. Optically compensated at 93px perpendicular width against
+      80px vertical strokes.
+    </p>
+  </div>
+  <div class="anatomy-visual reveal">
+    <div class="anatomy-svg-wrap">
+      <svg viewBox="-40 -40 580 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!--
+          Construction grid — symmetrical frame around the mark.
+          Mark spans x: 0–500, y: 0–440.
+          Center of mass: ~250, 220.
+          Grid uses even padding (-40 each side) for visual balance.
+        -->
+
+        <!-- Horizontal guides — cap height, junction, shoulder, baseline -->
+        <line x1="-40" y1="0"   x2="540" y2="0"   stroke="#3a3632" stroke-width="0.5" stroke-dasharray="4 4"/>
+        <line x1="-40" y1="175" x2="540" y2="175" stroke="#3a3632" stroke-width="0.5" stroke-dasharray="4 4"/>
+        <line x1="-40" y1="350" x2="540" y2="350" stroke="#3a3632" stroke-width="0.5" stroke-dasharray="4 4"/>
+        <line x1="-40" y1="440" x2="540" y2="440" stroke="#3a3632" stroke-width="0.5" stroke-dasharray="4 4"/>
+
+        <!-- Vertical guides — symmetrical: mark edges + centerline -->
+        <line x1="0"   y1="-40" x2="0"   y2="480" stroke="#3a3632" stroke-width="0.5" stroke-dasharray="4 4"/>
+        <line x1="250" y1="-40" x2="250" y2="480" stroke="#3a3632" stroke-width="0.5" stroke-dasharray="4 4"/>
+        <line x1="500" y1="-40" x2="500" y2="480" stroke="#3a3632" stroke-width="0.5" stroke-dasharray="4 4"/>
+
+        <!-- The mark — ghost fill + outline -->
+        <path d="M240 0H330V350H500V440H247V175L103 440H0Z" fill="#e8e4df" opacity="0.12"/>
+        <path d="M240 0H330V350H500V440H247V175L103 440H0Z" fill="none" stroke="#e8e4df" stroke-width="1"/>
+
+        <!-- Dimension markers — stem width -->
+        <line x1="240" y1="-25" x2="330" y2="-25" stroke="#c82800" stroke-width="0.75"/>
+        <line x1="240" y1="-30" x2="240" y2="-20" stroke="#c82800" stroke-width="0.75"/>
+        <line x1="330" y1="-30" x2="330" y2="-20" stroke="#c82800" stroke-width="0.75"/>
+        <text x="285" y="-12" font-family="monospace" font-size="9" fill="#c82800" text-anchor="middle">90</text>
+
+        <!-- Dimension markers — foot width -->
+        <line x1="250" y1="460" x2="500" y2="460" stroke="#c82800" stroke-width="0.75"/>
+        <line x1="250" y1="455" x2="250" y2="465" stroke="#c82800" stroke-width="0.75"/>
+        <line x1="500" y1="455" x2="500" y2="465" stroke="#c82800" stroke-width="0.75"/>
+        <text x="375" y="475" font-family="monospace" font-size="9" fill="#c82800" text-anchor="middle">250</text>
+
+        <!-- Dimension markers — full height -->
+        <line x1="525" y1="0" x2="525" y2="440" stroke="#c82800" stroke-width="0.75"/>
+        <line x1="520" y1="0" x2="530" y2="0" stroke="#c82800" stroke-width="0.75"/>
+        <line x1="520" y1="440" x2="530" y2="440" stroke="#c82800" stroke-width="0.75"/>
+        <text x="530" y="224" font-family="monospace" font-size="9" fill="#c82800" text-anchor="start" transform="rotate(90 530 224)">440</text>
+      </svg>
+      <div class="anatomy-annotation ann-diagonal">Diagonal ascender</div>
+      <div class="anatomy-annotation ann-vertical">Vertical stem</div>
+      <div class="anatomy-annotation ann-foot">Horizontal foot</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ PALETTE ════════════ -->
+<section id="palette">
+  <div class="reveal">
+    <div class="section-label">02 — Color</div>
+    <h2 class="section-heading">Five foundations</h2>
+    <p class="section-body">
+      A restrained palette that moves between warmth and edge. The
+      signal red anchors everything — used sparingly, it commands
+      attention. The rest is atmosphere.
+    </p>
+  </div>
+  <div class="palette-grid reveal">
+    <div class="swatch light-text" style="background: #0a0a0a;">
+      <span class="swatch-name">Obsidian</span>
+      <span class="swatch-hex">#0A0A0A</span>
+    </div>
+    <div class="swatch light-text" style="background: #141210;">
+      <span class="swatch-name">Surface</span>
+      <span class="swatch-hex">#141210</span>
+    </div>
+    <div class="swatch dark-text" style="background: #e8e4df;">
+      <span class="swatch-name">Parchment</span>
+      <span class="swatch-hex">#E8E4DF</span>
+    </div>
+    <div class="swatch dark-text" style="background: #b8a99a;">
+      <span class="swatch-name">Warm Stone</span>
+      <span class="swatch-hex">#B8A99A</span>
+    </div>
+    <div class="swatch light-text" style="background: #c82800;">
+      <span class="swatch-name">Signal</span>
+      <span class="swatch-hex">#C82800</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ TYPOGRAPHY ════════════ -->
+<section id="typography">
+  <div class="reveal">
+    <div class="section-label">03 — Typography</div>
+    <h2 class="section-heading">Three voices</h2>
+  </div>
+  <div class="type-showcase">
+    <div class="type-specimen reveal">
+      <div class="type-specimen-label">Display — Instrument Serif</div>
+      <div class="type-display">The first draft was always <em>human.</em></div>
+    </div>
+    <div class="type-specimen reveal">
+      <div class="type-specimen-label">System — Geist Mono</div>
+      <div class="type-mono">Lupo Studios / Brand Identity System<br>Version 1.0 — April 2026</div>
+    </div>
+    <div class="type-specimen reveal">
+      <div class="type-specimen-label">Body — DM Sans Light</div>
+      <div class="type-body-sample">
+        We build at the intersection of human intuition and machine precision.
+        Every pixel, every interaction, every moment of delight is a deliberate
+        choice — shaped by taste, informed by data, refined by craft. The tools
+        evolve. The standard doesn't.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ VARIATIONS ════════════ -->
+<section id="variations">
+  <div class="reveal">
+    <div class="section-label">04 — Variations</div>
+    <h2 class="section-heading">Context shifts</h2>
+    <p class="section-body">
+      The monogram adapts to its environment. Dark on light, light on dark,
+      signal red on obsidian. The form stays locked — only the context changes.
+    </p>
+  </div>
+  <div class="variations-grid reveal">
+    <div class="variation-cell" style="background: #0a0a0a;">
+      <svg viewBox="0 0 500 440" xmlns="http://www.w3.org/2000/svg">
+        <path d="M240 0H330V350H500V440H247V175L103 440H0Z" fill="#e8e4df"/>
+      </svg>
+      <span class="variation-label" style="color: #e8e4df;">Parchment on Obsidian</span>
+    </div>
+    <div class="variation-cell" style="background: #e8e4df;">
+      <svg viewBox="0 0 500 440" xmlns="http://www.w3.org/2000/svg">
+        <path d="M240 0H330V350H500V440H247V175L103 440H0Z" fill="#0a0a0a"/>
+      </svg>
+      <span class="variation-label" style="color: #0a0a0a;">Obsidian on Parchment</span>
+    </div>
+    <div class="variation-cell" style="background: #0a0a0a;">
+      <svg viewBox="0 0 500 440" xmlns="http://www.w3.org/2000/svg">
+        <path d="M240 0H330V350H500V440H247V175L103 440H0Z" fill="#c82800"/>
+      </svg>
+      <span class="variation-label" style="color: #c82800;">Signal on Obsidian</span>
+    </div>
+    <div class="variation-cell" style="background: #141210;">
+      <svg viewBox="0 0 500 440" xmlns="http://www.w3.org/2000/svg">
+        <path d="M240 0H330V350H500V440H247V175L103 440H0Z" fill="#b8a99a"/>
+      </svg>
+      <span class="variation-label" style="color: #b8a99a;">Warm Stone on Surface</span>
+    </div>
+    <div class="variation-cell" style="background: #c82800;">
+      <svg viewBox="0 0 500 440" xmlns="http://www.w3.org/2000/svg">
+        <path d="M240 0H330V350H500V440H247V175L103 440H0Z" fill="#e8e4df"/>
+      </svg>
+      <span class="variation-label" style="color: #e8e4df;">Parchment on Signal</span>
+    </div>
+    <div class="variation-cell" style="background: #b8a99a;">
+      <svg viewBox="0 0 500 440" xmlns="http://www.w3.org/2000/svg">
+        <path d="M240 0H330V350H500V440H247V175L103 440H0Z" fill="#141210"/>
+      </svg>
+      <span class="variation-label" style="color: #141210;">Surface on Warm Stone</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ FOOTER ════════════ -->
+<footer>
+  <span>Lupo Studios &copy; 2026</span>
+  <span>/L Identity System v1.0</span>
+</footer>
+
+<!-- ════════════ SCRIPTS ════════════ -->
+<script>
+// ─── HERO CANVAS: MONOGRAM PARTICLE SYSTEM ───
+(function() {
+  const canvas = document.getElementById('hero-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [], mouse = { x: -9999, y: -9999 }, phase = 'drawing';
+  let drawProgress = 0;
+  let assembled = false;
+  let targetPoints = [];
+  const PARTICLE_COUNT = 2800;
+  const ACCENT = '#c82800';
+  const FG = '#e8e4df';
+  const WARM = '#b8a99a';
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    if (targetPoints.length === 0) sampleMonogram();
+  }
+
+  // Sample points from the monogram path
+  function sampleMonogram() {
+    targetPoints = [];
+    const offCanvas = document.createElement('canvas');
+    const size = Math.min(W, H) * 0.45;
+    offCanvas.width = W;
+    offCanvas.height = H;
+    const offCtx = offCanvas.getContext('2d');
+
+    const scale = size / 500;
+    const ox = (W - 500 * scale) / 2;
+    const oy = (H - 440 * scale) / 2;
+
+    offCtx.save();
+    offCtx.translate(ox, oy);
+    offCtx.scale(scale, scale);
+
+    offCtx.beginPath();
+    offCtx.moveTo(240, 0);
+    offCtx.lineTo(330, 0);
+    offCtx.lineTo(330, 350);
+    offCtx.lineTo(500, 350);
+    offCtx.lineTo(500, 440);
+    offCtx.lineTo(247, 440);
+    offCtx.lineTo(247, 175);
+    offCtx.lineTo(103, 440);
+    offCtx.lineTo(0, 440);
+    offCtx.closePath();
+    offCtx.fillStyle = '#fff';
+    offCtx.fill();
+    offCtx.restore();
+
+    const imageData = offCtx.getImageData(0, 0, W, H);
+    const data = imageData.data;
+    const gap = 4;
+
+    for (let y = 0; y < H; y += gap) {
+      for (let x = 0; x < W; x += gap) {
+        const i = (y * W + x) * 4;
+        if (data[i] > 128) {
+          targetPoints.push({ x, y });
+        }
+      }
+    }
+
+    // Shuffle and limit
+    for (let i = targetPoints.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [targetPoints[i], targetPoints[j]] = [targetPoints[j], targetPoints[i]];
+    }
+    targetPoints = targetPoints.slice(0, PARTICLE_COUNT);
+  }
+
+  function initParticles() {
+    particles = [];
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      const tp = targetPoints[i] || { x: W / 2, y: H / 2 };
+      // Start from random positions (scattered)
+      const angle = Math.random() * Math.PI * 2;
+      const dist = Math.random() * Math.max(W, H) * 0.8;
+      particles.push({
+        x: W / 2 + Math.cos(angle) * dist,
+        y: H / 2 + Math.sin(angle) * dist,
+        tx: tp.x,
+        ty: tp.y,
+        vx: 0,
+        vy: 0,
+        size: Math.random() * 2 + 0.5,
+        color: Math.random() < 0.08 ? ACCENT : (Math.random() < 0.3 ? WARM : FG),
+        delay: Math.random() * 1.5,
+        alpha: 0,
+        settled: false
+      });
+    }
+  }
+
+  let startTime = null;
+  const DRAW_DURATION = 2.5; // seconds for the stroke animation
+  const ASSEMBLY_DELAY = 0.5; // seconds after draw finishes before particles assemble
+
+  // SVG stroke path for draw animation
+  const drawPath = new Path2D();
+  let strokeScale, strokeOx, strokeOy;
+
+  function calcStrokeDimensions() {
+    const size = Math.min(W, H) * 0.45;
+    strokeScale = size / 500;
+    strokeOx = (W - 500 * strokeScale) / 2;
+    strokeOy = (H - 440 * strokeScale) / 2;
+  }
+
+  function drawStrokeFrame(progress) {
+    calcStrokeDimensions();
+    ctx.save();
+    ctx.translate(strokeOx, strokeOy);
+    ctx.scale(strokeScale, strokeScale);
+
+    // Draw the stroke path progressively
+    // We'll trace the outline path segments
+    const segments = [
+      [240, 0], [330, 0], [330, 350], [500, 350], [500, 440],
+      [247, 440], [247, 175], [103, 440], [0, 440], [240, 0]
+    ];
+
+    const totalSegments = segments.length - 1;
+    const currentLength = progress * totalSegments;
+    const completedSegments = Math.floor(currentLength);
+    const segmentProgress = currentLength - completedSegments;
+
+    ctx.beginPath();
+    ctx.moveTo(segments[0][0], segments[0][1]);
+
+    for (let i = 0; i < completedSegments && i < totalSegments; i++) {
+      ctx.lineTo(segments[i + 1][0], segments[i + 1][1]);
+    }
+
+    if (completedSegments < totalSegments) {
+      const from = segments[completedSegments];
+      const to = segments[completedSegments + 1];
+      const cx = from[0] + (to[0] - from[0]) * segmentProgress;
+      const cy = from[1] + (to[1] - from[1]) * segmentProgress;
+      ctx.lineTo(cx, cy);
+    }
+
+    ctx.strokeStyle = FG;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Fill with low opacity as it draws
+    if (progress > 0.5) {
+      const fillAlpha = (progress - 0.5) * 2 * 0.08;
+      ctx.beginPath();
+      ctx.moveTo(240, 0);
+      for (let i = 1; i < segments.length; i++) {
+        ctx.lineTo(segments[i][0], segments[i][1]);
+      }
+      ctx.closePath();
+      ctx.fillStyle = `rgba(232, 228, 223, ${fillAlpha})`;
+      ctx.fill();
+    }
+
+    ctx.restore();
+  }
+
+  function animate(timestamp) {
+    if (!startTime) startTime = timestamp;
+    const elapsed = (timestamp - startTime) / 1000;
+
+    ctx.clearRect(0, 0, W, H);
+
+    // Phase 1: Stroke draw animation
+    if (elapsed < DRAW_DURATION) {
+      phase = 'drawing';
+      const progress = Math.min(elapsed / DRAW_DURATION, 1);
+      const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      drawStrokeFrame(eased);
+    }
+    // Phase 2: Brief hold, then particles assemble
+    else if (elapsed < DRAW_DURATION + ASSEMBLY_DELAY) {
+      phase = 'hold';
+      drawStrokeFrame(1);
+    }
+    // Phase 3: Particle assembly + interactivity
+    else {
+      if (phase !== 'particles') {
+        phase = 'particles';
+        initParticles();
+      }
+
+      const assemblyTime = elapsed - DRAW_DURATION - ASSEMBLY_DELAY;
+
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        const t = Math.max(0, assemblyTime - p.delay);
+
+        if (t <= 0) {
+          // Not yet started moving
+          p.alpha = 0.1;
+          ctx.fillStyle = `rgba(200, 40, 0, ${p.alpha})`;
+          ctx.fillRect(p.x, p.y, 1, 1);
+          continue;
+        }
+
+        // Ease toward target
+        const easeForce = 0.04;
+        const friction = 0.88;
+
+        // Mouse repulsion
+        const mdx = p.x - mouse.x;
+        const mdy = p.y - mouse.y;
+        const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
+        const mouseRadius = 120;
+
+        let mx = 0, my = 0;
+        if (mDist < mouseRadius && mDist > 0) {
+          const force = (mouseRadius - mDist) / mouseRadius;
+          mx = (mdx / mDist) * force * 8;
+          my = (mdy / mDist) * force * 8;
+        }
+
+        p.vx += (p.tx - p.x) * easeForce + mx;
+        p.vy += (p.ty - p.y) * easeForce + my;
+        p.vx *= friction;
+        p.vy *= friction;
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // Alpha ramp
+        p.alpha = Math.min(1, t * 0.8);
+
+        const distToTarget = Math.sqrt((p.x - p.tx) ** 2 + (p.y - p.ty) ** 2);
+        p.settled = distToTarget < 2 && mDist > mouseRadius;
+
+        // Draw particle
+        const alpha = p.settled ? p.alpha * 0.85 : p.alpha * 0.6;
+        ctx.fillStyle = p.color === ACCENT
+          ? `rgba(200, 40, 0, ${alpha})`
+          : p.color === WARM
+            ? `rgba(184, 169, 154, ${alpha})`
+            : `rgba(232, 228, 223, ${alpha})`;
+
+        const size = p.settled ? p.size * 0.8 : p.size;
+        ctx.fillRect(p.x, p.y, size, size);
+      }
+
+      // Ambient floating particles (always)
+      drawAmbientParticles(elapsed);
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+  // Ambient particles that drift around the edges
+  const ambientParticles = [];
+  for (let i = 0; i < 60; i++) {
+    ambientParticles.push({
+      x: Math.random() * 3000,
+      y: Math.random() * 2000,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      size: Math.random() * 1.5 + 0.3,
+      alpha: Math.random() * 0.15 + 0.02,
+    });
+  }
+
+  function drawAmbientParticles(t) {
+    for (const p of ambientParticles) {
+      p.x += p.vx + Math.sin(t * 0.2 + p.y * 0.01) * 0.1;
+      p.y += p.vy + Math.cos(t * 0.15 + p.x * 0.01) * 0.1;
+      if (p.x < 0) p.x = W;
+      if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H;
+      if (p.y > H) p.y = 0;
+
+      ctx.fillStyle = `rgba(184, 169, 154, ${p.alpha})`;
+      ctx.fillRect(p.x, p.y, p.size, p.size);
+    }
+  }
+
+  // Mouse tracking
+  window.addEventListener('mousemove', (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+  });
+
+  window.addEventListener('mouseleave', () => {
+    mouse.x = -9999;
+    mouse.y = -9999;
+  });
+
+  window.addEventListener('resize', () => {
+    resize();
+    if (phase === 'particles') {
+      sampleMonogram();
+      // Re-assign targets
+      for (let i = 0; i < particles.length; i++) {
+        if (targetPoints[i]) {
+          particles[i].tx = targetPoints[i].x;
+          particles[i].ty = targetPoints[i].y;
+        }
+      }
+    }
+  });
+
+  resize();
+  requestAnimationFrame(animate);
+})();
+
+// ─── SCROLL REVEAL OBSERVER ───
+(function() {
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+
+  reveals.forEach(el => observer.observe(el));
+})();
+
+// ─── SWATCH COPY ON CLICK ───
+document.querySelectorAll('.swatch').forEach(swatch => {
+  swatch.addEventListener('click', () => {
+    const hex = swatch.querySelector('.swatch-hex').textContent;
+    navigator.clipboard?.writeText(hex);
+    const name = swatch.querySelector('.swatch-name');
+    const original = name.textContent;
+    name.textContent = 'Copied!';
+    setTimeout(() => name.textContent = original, 1200);
+  });
+});
+</script>
+
+</body>
+</html>

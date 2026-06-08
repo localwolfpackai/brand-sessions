@@ -1,0 +1,2205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Lupo Studios Brand System v3 — dual-mode design reference covering typography, color, components, and voice for Lab and Studio modes.">
+  <meta property="og:title" content="Lupo Studios Brand System v3">
+  <meta property="og:description" content="The complete design system reference for Lupo Studios — dual-mode, typographically driven, architecturally precise.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@humanlup">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0f1113" media="(prefers-color-scheme: dark)">
+  <title>Brand System v3 — Lupo Studios</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lora:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    /* ================================================================
+       TOKENS
+       ================================================================ */
+
+    :root {
+      --accent:        #558fe5;
+      --accent-dim:    rgba(85, 143, 229, 0.12);
+      --accent-mid:    rgba(85, 143, 229, 0.25);
+      --accent-glow:   rgba(85, 143, 229, 0.18);
+
+      --bg:            #ffffff;
+      --bg-subtle:     #f8f9fb;
+      --bg-raised:     #ffffff;
+      --surface:       #f3f5f8;
+
+      --ink:           #111318;
+      --ink-2:         #3d4350;
+      --ink-3:         #6b7280;
+      --ink-4:         #9ca3af;
+
+      --border:        #e2e5ea;
+      --border-mid:    #c8cdd6;
+      --hairline:      rgba(17, 19, 24, 0.08);
+
+      --studio-bg:     oklch(96.2% 0.01 80);
+      --studio-ink:    oklch(13% 0.004 264);
+      --studio-accent: oklch(65% 0.19 35);
+      --studio-hairline: oklch(13% 0.004 264 / 0.15);
+
+      --font-display:  "Lora", Georgia, "Times New Roman", serif;
+      --font-sans:     "Inter", system-ui, -apple-system, sans-serif;
+      --font-mono:     "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+      --expo-out:      cubic-bezier(0.16, 1, 0.3, 1);
+      --back-out:      cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      --quint-io:      cubic-bezier(0.83, 0, 0.17, 1);
+
+      --sidebar-w:     240px;
+      --content-max:   780px;
+      --header-h:      52px;
+    }
+
+    /* Studio mode overrides */
+    .mode-studio {
+      --bg:            var(--studio-bg);
+      --bg-subtle:     oklch(94% 0.012 80);
+      --bg-raised:     oklch(97.5% 0.008 80);
+      --surface:       oklch(92% 0.014 80);
+      --ink:           var(--studio-ink);
+      --ink-2:         oklch(25% 0.006 264);
+      --ink-3:         oklch(40% 0.008 264);
+      --ink-4:         oklch(55% 0.006 264);
+      --border:        oklch(85% 0.012 80);
+      --border-mid:    oklch(78% 0.015 80);
+      --hairline:      oklch(13% 0.004 264 / 0.12);
+      --accent:        oklch(65% 0.19 35);
+      --accent-dim:    oklch(65% 0.19 35 / 0.1);
+      --accent-mid:    oklch(65% 0.19 35 / 0.22);
+      --accent-glow:   oklch(65% 0.19 35 / 0.15);
+    }
+
+
+    /* ================================================================
+       RESET & BASE
+       ================================================================ */
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: calc(var(--header-h) + 1.5rem);
+    }
+
+    body {
+      font-family: var(--font-sans);
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+      font-size: 15px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-color: var(--bg);
+      color: var(--ink);
+      transition: background-color 0.5s var(--expo-out), color 0.5s var(--expo-out);
+    }
+
+    ::selection {
+      background-color: var(--accent-mid);
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 3px;
+    }
+
+    img, svg { display: block; }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+
+    a:hover { opacity: 0.75; }
+
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.8125em;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.1em 0.4em;
+      color: var(--ink-2);
+    }
+
+
+    /* ================================================================
+       TOPBAR
+       ================================================================ */
+
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--header-h);
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.25rem;
+      z-index: 100;
+      transition: background-color 0.5s var(--expo-out), border-color 0.5s var(--expo-out);
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .topbar-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      text-decoration: none;
+      color: var(--ink);
+      transition: opacity 0.15s;
+    }
+
+    .topbar-logo:hover { opacity: 0.75; }
+
+    .topbar-mark {
+      width: 22px;
+      height: auto;
+      fill: var(--ink);
+      transition: fill 0.5s var(--expo-out);
+    }
+
+    .topbar-wordmark {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.9375rem;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      color: var(--ink);
+      transition: color 0.5s var(--expo-out);
+    }
+
+    .topbar-divider {
+      width: 1px;
+      height: 18px;
+      background: var(--border);
+      transition: background 0.5s;
+    }
+
+    .topbar-doc-title {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--ink-3);
+      letter-spacing: 0.01em;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .version-badge {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 500;
+      color: var(--ink-3);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 0.2rem 0.625rem;
+      letter-spacing: 0.01em;
+      transition: background 0.5s, border-color 0.5s, color 0.5s;
+    }
+
+    /* Mode toggle */
+    .mode-toggle {
+      display: flex;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 2px;
+      gap: 2px;
+      transition: background 0.5s, border-color 0.5s;
+    }
+
+    .mode-btn {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      padding: 0.3rem 0.75rem;
+      border: none;
+      border-radius: 4px;
+      background: transparent;
+      color: var(--ink-3);
+      cursor: pointer;
+      transition: all 0.2s var(--expo-out);
+    }
+
+    .mode-btn.active {
+      background: var(--bg-raised);
+      color: var(--ink);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 0 0 1px var(--border);
+    }
+
+    .mode-btn:hover:not(.active) {
+      color: var(--ink-2);
+    }
+
+
+    /* ================================================================
+       SHELL (sidebar + content)
+       ================================================================ */
+
+    .shell {
+      display: flex;
+      padding-top: var(--header-h);
+      min-height: 100vh;
+    }
+
+
+    /* ================================================================
+       SIDEBAR
+       ================================================================ */
+
+    .sidebar {
+      position: fixed;
+      top: var(--header-h);
+      left: 0;
+      bottom: 0;
+      width: var(--sidebar-w);
+      overflow-y: auto;
+      padding: 1.5rem 0 3rem;
+      border-right: 1px solid var(--border);
+      background: var(--bg);
+      transition: background-color 0.5s var(--expo-out), border-color 0.5s var(--expo-out);
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-track { background: transparent; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    .sidebar-section {
+      padding: 0 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .sidebar-section-label {
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-4);
+      padding: 0 0.625rem;
+      margin-bottom: 0.375rem;
+      transition: color 0.5s;
+    }
+
+    .sidebar-nav {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .sidebar-nav a {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.375rem 0.625rem;
+      border-radius: 5px;
+      font-size: 0.8125rem;
+      color: var(--ink-2);
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+      line-height: 1.4;
+    }
+
+    .sidebar-nav a:hover {
+      background: var(--surface);
+      color: var(--ink);
+      opacity: 1;
+    }
+
+    .sidebar-nav a.active {
+      background: var(--accent-dim);
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .sidebar-nav a .nav-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+
+    .sidebar-nav a.active .nav-dot {
+      opacity: 1;
+    }
+
+    .sidebar-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0.75rem 0.75rem;
+      transition: background 0.5s;
+    }
+
+
+    /* ================================================================
+       CONTENT AREA
+       ================================================================ */
+
+    .content {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      min-width: 0;
+    }
+
+    .content-inner {
+      max-width: var(--content-max);
+      margin: 0 auto;
+      padding: 3rem 2.5rem 6rem;
+    }
+
+    /* Section anchors */
+    .doc-section {
+      padding-top: 3rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .doc-section + .doc-section {
+      border-top: 1px solid var(--border);
+      transition: border-color 0.5s;
+    }
+
+    /* Section header */
+    .section-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.625rem;
+      transition: color 0.5s;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem);
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+      color: var(--ink);
+      margin-bottom: 0.75rem;
+      text-wrap: balance;
+      transition: color 0.5s;
+    }
+
+    .section-lead {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--ink-2);
+      max-width: 62ch;
+      margin-bottom: 2.5rem;
+      transition: color 0.5s;
+    }
+
+    .subsection-label {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      margin-bottom: 0.75rem;
+      margin-top: 2rem;
+      transition: color 0.5s;
+    }
+
+    .subsection-label:first-child { margin-top: 0; }
+
+
+    /* ================================================================
+       HERO / PAGE HEADER
+       ================================================================ */
+
+    .page-hero {
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0;
+      transition: border-color 0.5s;
+    }
+
+    .hero-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 500;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid var(--accent-mid);
+      border-radius: 100px;
+      padding: 0.25rem 0.75rem;
+      margin-bottom: 1.25rem;
+      transition: background 0.5s, border-color 0.5s, color 0.5s;
+    }
+
+    .hero-kicker-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      transition: background 0.5s;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(2rem, 4vw + 0.5rem, 3.5rem);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      text-wrap: balance;
+      margin-bottom: 1rem;
+      transition: color 0.5s;
+    }
+
+    .hero-subtitle {
+      font-size: 1.0625rem;
+      line-height: 1.65;
+      color: var(--ink-2);
+      max-width: 58ch;
+      margin-bottom: 2rem;
+      transition: color 0.5s;
+    }
+
+    .hero-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: border-color 0.5s;
+    }
+
+    .hero-meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 0.75rem 1.25rem;
+      border-right: 1px solid var(--border);
+      transition: border-color 0.5s;
+    }
+
+    .hero-meta-item:last-child { border-right: none; }
+
+    .hero-meta-label {
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      font-weight: 500;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--ink-4);
+      transition: color 0.5s;
+    }
+
+    .hero-meta-value {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--ink);
+      transition: color 0.5s;
+    }
+
+
+    /* ================================================================
+       CALLOUT / INFO BOX
+       ================================================================ */
+
+    .callout {
+      display: flex;
+      gap: 0.875rem;
+      padding: 1rem 1.25rem;
+      background: var(--accent-dim);
+      border: 1px solid var(--accent-mid);
+      border-radius: 8px;
+      margin: 1.5rem 0;
+      transition: background 0.5s, border-color 0.5s;
+    }
+
+    .callout-icon {
+      width: 16px;
+      height: 16px;
+      color: var(--accent);
+      flex-shrink: 0;
+      margin-top: 2px;
+      transition: color 0.5s;
+    }
+
+    .callout-text {
+      font-size: 0.875rem;
+      line-height: 1.6;
+      color: var(--ink-2);
+      transition: color 0.5s;
+    }
+
+    .callout-text strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+
+    /* ================================================================
+       CODE BLOCKS
+       ================================================================ */
+
+    .code-block {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 1.25rem 0;
+      transition: background 0.5s, border-color 0.5s;
+    }
+
+    .code-block-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 1rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-subtle);
+      transition: background 0.5s, border-color 0.5s;
+    }
+
+    .code-block-lang {
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-4);
+      transition: color 0.5s;
+    }
+
+    .code-copy-btn {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--ink-3);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .code-copy-btn:hover {
+      background: var(--surface);
+      color: var(--ink);
+    }
+
+    .code-block pre {
+      padding: 1rem 1.25rem;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      line-height: 1.7;
+      color: var(--ink-2);
+      tab-size: 2;
+      transition: color 0.5s;
+    }
+
+    .code-block pre .comment { color: var(--ink-4); }
+    .code-block pre .key     { color: var(--accent); }
+    .code-block pre .str     { color: oklch(55% 0.15 145); }
+    .code-block pre .num     { color: oklch(60% 0.18 35); }
+
+
+    /* ================================================================
+       TYPOGRAPHY SPECIMENS
+       ================================================================ */
+
+    .specimen-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 1.25rem;
+      transition: border-color 0.5s;
+    }
+
+    .specimen-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.625rem 1rem;
+      background: var(--bg-subtle);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.5s, border-color 0.5s;
+    }
+
+    .specimen-font-name {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.02em;
+      transition: color 0.5s;
+    }
+
+    .specimen-role {
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      color: var(--ink-4);
+      transition: color 0.5s;
+    }
+
+    .specimen-body {
+      padding: 1.5rem;
+    }
+
+    .type-scale-row {
+      display: flex;
+      align-items: baseline;
+      gap: 1.25rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border);
+      transition: border-color 0.5s;
+    }
+
+    .type-scale-row:last-child { border-bottom: none; }
+
+    .type-scale-meta {
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      color: var(--ink-4);
+      min-width: 5.5rem;
+      flex-shrink: 0;
+      line-height: 1.4;
+      transition: color 0.5s;
+    }
+
+
+    /* ================================================================
+       COLOR SWATCHES
+       ================================================================ */
+
+    .swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 140px), 1fr));
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .swatch {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: border-color 0.5s;
+    }
+
+    .swatch-color {
+      height: 64px;
+      transition: background 0.5s;
+    }
+
+    .swatch-info {
+      padding: 0.5rem 0.75rem;
+      background: var(--bg-raised);
+      transition: background 0.5s;
+    }
+
+    .swatch-name {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 1px;
+      transition: color 0.5s;
+    }
+
+    .swatch-value {
+      font-family: var(--font-mono);
+      font-size: 0.5625rem;
+      color: var(--ink-4);
+      transition: color 0.5s;
+    }
+
+    /* Palette group header */
+    .palette-group {
+      margin-bottom: 2rem;
+    }
+
+    .palette-group-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      margin-bottom: 0.875rem;
+      transition: color 0.5s;
+    }
+
+    .palette-group-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+      transition: background 0.5s;
+    }
+
+
+    /* ================================================================
+       TOKEN TABLE
+       ================================================================ */
+
+    .token-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8125rem;
+      margin: 1.25rem 0;
+    }
+
+    .token-table th {
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--ink-4);
+      text-align: left;
+      padding: 0.5rem 0.875rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-subtle);
+      transition: color 0.5s, background 0.5s, border-color 0.5s;
+    }
+
+    .token-table td {
+      padding: 0.625rem 0.875rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+      transition: border-color 0.5s;
+    }
+
+    .token-table tr:last-child td { border-bottom: none; }
+
+    .token-table tr:hover td {
+      background: var(--bg-subtle);
+    }
+
+    .token-name {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--accent);
+      transition: color 0.5s;
+    }
+
+    .token-value {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--ink-3);
+      transition: color 0.5s;
+    }
+
+    .token-desc {
+      font-size: 0.8125rem;
+      color: var(--ink-2);
+      transition: color 0.5s;
+    }
+
+    .token-swatch {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      display: inline-block;
+      vertical-align: middle;
+      transition: border-color 0.5s;
+    }
+
+
+    /* ================================================================
+       COMPONENTS SHOWCASE
+       ================================================================ */
+
+    .component-group {
+      margin-bottom: 2.5rem;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1.125rem;
+      border-radius: 6px;
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s var(--expo-out);
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .btn-primary:hover {
+      opacity: 1;
+      filter: brightness(1.08);
+      box-shadow: 0 4px 12px var(--accent-glow);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: var(--bg-raised);
+      color: var(--ink);
+      border: 1px solid var(--border-mid);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+
+    .btn-secondary:hover {
+      opacity: 1;
+      border-color: var(--ink-3);
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--ink-2);
+      border: 1px solid transparent;
+    }
+
+    .btn-ghost:hover {
+      opacity: 1;
+      background: var(--surface);
+      color: var(--ink);
+    }
+
+    .btn-danger {
+      background: oklch(55% 0.2 25 / 0.1);
+      color: oklch(50% 0.2 25);
+      border: 1px solid oklch(55% 0.2 25 / 0.2);
+    }
+
+    .btn-danger:hover {
+      opacity: 1;
+      background: oklch(55% 0.2 25 / 0.18);
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.625rem;
+      align-items: center;
+    }
+
+    /* Tags / Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.2rem 0.625rem;
+      border-radius: 100px;
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      border: 1px solid transparent;
+      transition: background 0.5s, color 0.5s, border-color 0.5s;
+    }
+
+    .badge-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .badge-blue {
+      background: rgba(85, 143, 229, 0.1);
+      color: #558fe5;
+      border-color: rgba(85, 143, 229, 0.2);
+    }
+
+    .badge-neutral {
+      background: var(--surface);
+      color: var(--ink-2);
+      border-color: var(--border);
+    }
+
+    .badge-green {
+      background: oklch(70% 0.15 145 / 0.1);
+      color: oklch(45% 0.15 145);
+      border-color: oklch(70% 0.15 145 / 0.2);
+    }
+
+    .badge-orange {
+      background: oklch(65% 0.19 35 / 0.1);
+      color: oklch(55% 0.19 35);
+      border-color: oklch(65% 0.19 35 / 0.2);
+    }
+
+    .badge-purple {
+      background: oklch(60% 0.18 280 / 0.1);
+      color: oklch(50% 0.18 280);
+      border-color: oklch(60% 0.18 280 / 0.2);
+    }
+
+    .badge-red {
+      background: oklch(55% 0.2 25 / 0.1);
+      color: oklch(48% 0.2 25);
+      border-color: oklch(55% 0.2 25 / 0.2);
+    }
+
+    /* Cards */
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      background: var(--bg-raised);
+      transition: all 0.25s var(--expo-out);
+    }
+
+    .card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-dim), 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    .card-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      transition: color 0.5s;
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.125rem;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+      transition: color 0.5s;
+    }
+
+    .card-body {
+      font-size: 0.875rem;
+      line-height: 1.65;
+      color: var(--ink-3);
+      margin-bottom: 1.25rem;
+      transition: color 0.5s;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 0.875rem;
+      border-top: 1px solid var(--border);
+      transition: border-color 0.5s;
+    }
+
+    .card-meta {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--ink-4);
+      transition: color 0.5s;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+      gap: 0.875rem;
+    }
+
+    /* Studio card */
+    .card-studio {
+      background: var(--studio-bg);
+      border-color: var(--studio-hairline);
+      color: var(--studio-ink);
+    }
+
+    .card-studio .card-eyebrow { color: var(--studio-accent); }
+    .card-studio .card-title   { color: var(--studio-ink); }
+    .card-studio .card-body    { color: oklch(35% 0.006 264); }
+    .card-studio .card-footer  { border-top-color: var(--studio-hairline); }
+    .card-studio .card-meta    { color: oklch(50% 0.006 264); }
+
+    .card-studio:hover {
+      border-color: var(--studio-accent);
+      box-shadow: 0 0 0 3px oklch(65% 0.19 35 / 0.1), 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    /* Lab card */
+    .card-lab {
+      background: #ffffff;
+      border-color: rgba(17,19,24,0.1);
+      color: oklch(21.6% 0.003 264);
+    }
+
+    .card-lab .card-eyebrow { color: #558fe5; }
+    .card-lab .card-title   { color: oklch(21.6% 0.003 264); }
+    .card-lab .card-body    { color: oklch(40% 0.004 264); }
+    .card-lab .card-footer  { border-top-color: rgba(17,19,24,0.1); }
+    .card-lab .card-meta    { color: oklch(55% 0.004 264); }
+
+    .card-lab:hover {
+      border-color: #558fe5;
+      box-shadow: 0 0 0 3px rgba(85,143,229,0.12), 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+
+    /* ================================================================
+       SPACING SCALE
+       ================================================================ */
+
+    .spacing-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .spacing-row {
+      display: grid;
+      grid-template-columns: 5rem 1fr 5rem;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+      transition: border-color 0.5s;
+    }
+
+    .spacing-row:last-child { border-bottom: none; }
+
+    .spacing-token {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--ink-3);
+      transition: color 0.5s;
+    }
+
+    .spacing-bar-wrap {
+      height: 6px;
+      background: var(--surface);
+      border-radius: 3px;
+      overflow: hidden;
+      transition: background 0.5s;
+    }
+
+    .spacing-bar {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 3px;
+      transition: background 0.5s, width 0.4s var(--expo-out);
+    }
+
+    .spacing-px {
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      color: var(--ink-4);
+      text-align: right;
+      transition: color 0.5s;
+    }
+
+
+    /* ================================================================
+       EASING DEMOS
+       ================================================================ */
+
+    .easing-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 0.75rem;
+      transition: border-color 0.5s;
+    }
+
+    .easing-row {
+      display: grid;
+      grid-template-columns: 7rem 1fr 8rem;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.875rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      cursor: default;
+      transition: background 0.15s, border-color 0.5s;
+    }
+
+    .easing-row:last-child { border-bottom: none; }
+    .easing-row:hover { background: var(--bg-subtle); }
+
+    .easing-name {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--ink-2);
+      transition: color 0.5s;
+    }
+
+    .easing-track {
+      height: 2px;
+      background: var(--border);
+      border-radius: 1px;
+      position: relative;
+      transition: background 0.5s;
+    }
+
+    .easing-ball {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      transition: left 1s, background 0.5s;
+    }
+
+    .easing-row:hover .easing-ball { left: calc(100% - 10px); }
+    .easing-expo .easing-ball { transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1); }
+    .easing-back .easing-ball { transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    .easing-quint .easing-ball { transition-timing-function: cubic-bezier(0.83, 0, 0.17, 1); }
+
+    .easing-value {
+      font-family: var(--font-mono);
+      font-size: 0.5625rem;
+      color: var(--ink-4);
+      transition: color 0.5s;
+    }
+
+
+    /* ================================================================
+       MONOGRAM DISPLAY
+       ================================================================ */
+
+    .mark-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.875rem;
+    }
+
+    .mark-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+      padding: 3rem 2rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      transition: border-color 0.5s;
+    }
+
+    .mark-panel-label {
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-4);
+      transition: color 0.5s;
+    }
+
+    .mark-panel-lab {
+      background: #ffffff;
+      border-color: rgba(17,19,24,0.1);
+    }
+
+    .mark-panel-studio {
+      background: var(--studio-bg);
+      border-color: var(--studio-hairline);
+    }
+
+    .mark-panel-dark {
+      background: oklch(12% 0.003 264);
+      border-color: oklch(25% 0.003 264);
+    }
+
+    .mark-panel-accent {
+      background: #558fe5;
+      border-color: rgba(255,255,255,0.2);
+    }
+
+
+    /* ================================================================
+       VOICE SECTION
+       ================================================================ */
+
+    .voice-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.875rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .voice-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color 0.5s;
+    }
+
+    .voice-card-header {
+      padding: 0.625rem 1rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.5s, border-color 0.5s;
+    }
+
+    .voice-card-mode {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 600;
+      color: var(--accent);
+      transition: color 0.5s;
+    }
+
+    .voice-card-mode.studio { color: var(--studio-accent); }
+
+    .voice-card-type {
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      color: var(--ink-4);
+      transition: color 0.5s;
+    }
+
+    .voice-card-body {
+      padding: 1rem;
+      font-size: 0.9375rem;
+      line-height: 1.65;
+      color: var(--ink-2);
+      font-style: italic;
+      transition: color 0.5s;
+    }
+
+    .voice-card-note {
+      padding: 0.625rem 1rem;
+      border-top: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      color: var(--ink-4);
+      background: var(--bg-subtle);
+      transition: background 0.5s, border-color 0.5s, color 0.5s;
+    }
+
+    /* Principles list */
+    .principles-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color 0.5s;
+    }
+
+    .principle-item {
+      display: flex;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.15s, border-color 0.5s;
+    }
+
+    .principle-item:last-child { border-bottom: none; }
+    .principle-item:hover { background: var(--bg-subtle); }
+
+    .principle-num {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 600;
+      color: var(--accent);
+      min-width: 1.5rem;
+      padding-top: 2px;
+      transition: color 0.5s;
+    }
+
+    .principle-text {
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      color: var(--ink-2);
+      transition: color 0.5s;
+    }
+
+    .principle-text strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+
+    /* ================================================================
+       FOOTER
+       ================================================================ */
+
+    .doc-footer {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      transition: border-color 0.5s;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+    }
+
+    .footer-mark {
+      width: 18px;
+      height: auto;
+      fill: var(--ink-4);
+      transition: fill 0.5s;
+    }
+
+    .footer-text {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--ink-4);
+      transition: color 0.5s;
+    }
+
+
+    /* ================================================================
+       MOTION
+       ================================================================ */
+
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-in {
+      animation: fade-up 0.55s var(--expo-out) both;
+    }
+
+    .delay-1 { animation-delay: 0.06s; }
+    .delay-2 { animation-delay: 0.12s; }
+    .delay-3 { animation-delay: 0.18s; }
+    .delay-4 { animation-delay: 0.24s; }
+    .delay-5 { animation-delay: 0.30s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+
+    /* ================================================================
+       RESPONSIVE
+       ================================================================ */
+
+    @media (max-width: 860px) {
+      :root {
+        --sidebar-w: 0px;
+      }
+
+      .sidebar { display: none; }
+      .content { margin-left: 0; }
+      .content-inner { padding: 2rem 1.25rem 4rem; }
+
+      .voice-pair { grid-template-columns: 1fr; }
+      .mark-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 540px) {
+      .hero-meta-row { flex-direction: column; }
+      .hero-meta-item { border-right: none; border-bottom: 1px solid var(--border); }
+      .hero-meta-item:last-child { border-bottom: none; }
+      .mark-grid { grid-template-columns: 1fr; }
+      .easing-row { grid-template-columns: 6rem 1fr; }
+      .easing-value { display: none; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ================================================================
+       TOPBAR
+       ================================================================ -->
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <a class="topbar-logo" href="#hero">
+        <svg class="topbar-mark" viewBox="0 0 500 440" aria-hidden="true">
+          <path d="M240 0H330V350H500V440H247.06V175L102.52 440H0L240 0Z"/>
+        </svg>
+        <span class="topbar-wordmark">Lupo Studios</span>
+      </a>
+      <div class="topbar-divider"></div>
+      <span class="topbar-doc-title">Brand System</span>
+    </div>
+    <div class="topbar-right">
+      <span class="version-badge">v3.0</span>
+      <div class="mode-toggle" role="radiogroup" aria-label="Brand mode">
+        <button class="mode-btn active" id="btn-lab" role="radio" aria-checked="true" onclick="setMode('lab')">Lab</button>
+        <button class="mode-btn" id="btn-studio" role="radio" aria-checked="false" onclick="setMode('studio')">Studio</button>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- ================================================================
+       SHELL
+       ================================================================ -->
+
+  <div class="shell">
+
+    <!-- SIDEBAR -->
+    <nav class="sidebar" aria-label="Brand system navigation">
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Overview</div>
+        <ul class="sidebar-nav">
+          <li><a href="#hero" class="active"><span class="nav-dot"></span>Introduction</a></li>
+          <li><a href="#dual-mode"><span class="nav-dot"></span>Dual-Mode System</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-divider"></div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Foundations</div>
+        <ul class="sidebar-nav">
+          <li><a href="#typography"><span class="nav-dot"></span>Typography</a></li>
+          <li><a href="#color"><span class="nav-dot"></span>Color System</a></li>
+          <li><a href="#spacing"><span class="nav-dot"></span>Spacing Scale</a></li>
+          <li><a href="#motion"><span class="nav-dot"></span>Motion</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-divider"></div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Components</div>
+        <ul class="sidebar-nav">
+          <li><a href="#components"><span class="nav-dot"></span>Buttons</a></li>
+          <li><a href="#badges"><span class="nav-dot"></span>Badges &amp; Tags</a></li>
+          <li><a href="#cards"><span class="nav-dot"></span>Cards</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-divider"></div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Identity</div>
+        <ul class="sidebar-nav">
+          <li><a href="#mark"><span class="nav-dot"></span>The /L Mark</a></li>
+          <li><a href="#voice"><span class="nav-dot"></span>Voice &amp; Tone</a></li>
+        </ul>
+      </div>
+
+    </nav>
+
+
+    <!-- CONTENT -->
+    <main class="content">
+      <div class="content-inner">
+
+
+        <!-- ============================================================
+             HERO
+             ============================================================ -->
+
+        <section class="page-hero" id="hero">
+          <div class="hero-kicker animate-in">
+            <span class="hero-kicker-dot"></span>
+            Brand System v3
+          </div>
+          <h1 class="hero-title animate-in delay-1">Architectural.<br>Curated.<br>Authoritative.</h1>
+          <p class="hero-subtitle animate-in delay-2">A design system built for two modes of the same brand. Lab for precision engineering. Studio for editorial authority. One monogram, one type system, two tonal states.</p>
+          <div class="hero-meta-row animate-in delay-3">
+            <div class="hero-meta-item">
+              <span class="hero-meta-label">Version</span>
+              <span class="hero-meta-value">3.0</span>
+            </div>
+            <div class="hero-meta-item">
+              <span class="hero-meta-label">Updated</span>
+              <span class="hero-meta-value">2026-05-06</span>
+            </div>
+            <div class="hero-meta-item">
+              <span class="hero-meta-label">Author</span>
+              <span class="hero-meta-value">Anthony Lupo</span>
+            </div>
+            <div class="hero-meta-item">
+              <span class="hero-meta-label">Mode</span>
+              <span class="hero-meta-value" id="mode-display">Lab</span>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ============================================================
+             DUAL-MODE
+             ============================================================ -->
+
+        <section class="doc-section" id="dual-mode">
+          <div class="section-eyebrow">Dual-Mode System</div>
+          <h2 class="section-title">Two states, one brand</h2>
+          <p class="section-lead">The color system signals intent. White surface and blue accent means you're in the Lab — building tools, shipping systems, writing documentation. Warm paper and orange accent means you're in the Studio — writing strategy, designing campaigns, presenting to clients.</p>
+
+          <div class="callout">
+            <svg class="callout-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <circle cx="8" cy="8" r="6.5"/>
+              <path d="M8 7v4M8 5.5v.5" stroke-linecap="round"/>
+            </svg>
+            <div class="callout-text">
+              <strong>Same person, different room.</strong> Both modes share the same authentic voice — contractions mandatory, no AI slop, the collar stays loose. The surface changes; the person doesn't.
+            </div>
+          </div>
+
+          <table class="token-table" style="margin-top: 1.5rem;">
+            <thead>
+              <tr>
+                <th>Mode</th>
+                <th>Surface</th>
+                <th>Accent</th>
+                <th>Context</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="badge badge-blue">Lab</span></td>
+                <td><span class="token-value">#FFFFFF — white</span></td>
+                <td><span class="token-value">#558fe5 — sky blue</span></td>
+                <td class="token-desc">Product builds, agentic systems, developer tooling, technical docs</td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-orange">Studio</span></td>
+                <td><span class="token-value">#F6F3EC — warm paper</span></td>
+                <td><span class="token-value">#E86A2C — burnt orange</span></td>
+                <td class="token-desc">Marketing, SEO audits, creative consultancy, case studies</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+
+        <!-- ============================================================
+             TYPOGRAPHY
+             ============================================================ -->
+
+        <section class="doc-section" id="typography">
+          <div class="section-eyebrow">Typography</div>
+          <h2 class="section-title">The typographic tension</h2>
+          <p class="section-lead">Lora's calligraphic warmth against Geist Mono's geometric precision. Traditional authority meets ultra-modern craft. The contrast is the identity.</p>
+
+          <!-- Lora -->
+          <div class="specimen-card">
+            <div class="specimen-header">
+              <span class="specimen-font-name">Lora</span>
+              <span class="specimen-role">Display / Headings</span>
+            </div>
+            <div class="specimen-body">
+              <div class="type-scale-row">
+                <div class="type-scale-meta">display-xl<br>clamp(2.5–4.5rem)</div>
+                <p style="font-family: var(--font-display); font-weight: 700; font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.1; letter-spacing: -0.03em; color: var(--ink);">The mess is the method</p>
+              </div>
+              <div class="type-scale-row">
+                <div class="type-scale-meta">display-lg<br>clamp(1.75–2.75rem)</div>
+                <p style="font-family: var(--font-display); font-weight: 700; font-size: clamp(1.5rem, 3vw, 2.25rem); line-height: 1.15; letter-spacing: -0.025em; color: var(--ink);">Curiosity as a daily practice</p>
+              </div>
+              <div class="type-scale-row">
+                <div class="type-scale-meta">display-md<br>clamp(1.25–1.75rem)</div>
+                <p style="font-family: var(--font-display); font-weight: 700; font-size: clamp(1.125rem, 2vw, 1.5rem); line-height: 1.2; letter-spacing: -0.02em; color: var(--ink);">High-craft systems for the taste-led builder</p>
+              </div>
+              <div class="type-scale-row">
+                <div class="type-scale-meta">display-sm<br>clamp(1–1.25rem)</div>
+                <p style="font-family: var(--font-display); font-weight: 600; font-size: 1.0625rem; line-height: 1.3; letter-spacing: -0.01em; color: var(--ink);">Every element earns its space on the page</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Inter -->
+          <div class="specimen-card">
+            <div class="specimen-header">
+              <span class="specimen-font-name">Inter Variable</span>
+              <span class="specimen-role">Body / UI</span>
+            </div>
+            <div class="specimen-body">
+              <div class="type-scale-row">
+                <div class="type-scale-meta">body-lg<br>18px / 1.65</div>
+                <p style="font-size: 1.125rem; line-height: 1.65; color: var(--ink-2);">I'm a self-taught builder with a decade of experience in tech sales and marketing strategy. I use AI to close the gap between ideas and execution. The real skill is in the curation.</p>
+              </div>
+              <div class="type-scale-row">
+                <div class="type-scale-meta">body<br>15px / 1.65</div>
+                <p style="font-size: 0.9375rem; line-height: 1.65; color: var(--ink-2);">Standard body with OpenType features cv02, cv03, cv04, cv11 active. The single-story lowercase 'a' and open numerals give Inter a slightly geometric character that reads cleanly at all sizes.</p>
+              </div>
+              <div class="type-scale-row">
+                <div class="type-scale-meta">body-sm<br>14px / 1.5</div>
+                <p style="font-size: 0.875rem; line-height: 1.5; color: var(--ink-3);">Small body at 14px. Secondary text, descriptions, supporting content. Reduced color for visual hierarchy.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Geist Mono -->
+          <div class="specimen-card">
+            <div class="specimen-header">
+              <span class="specimen-font-name">Geist Mono</span>
+              <span class="specimen-role">Technical / Metadata</span>
+            </div>
+            <div class="specimen-body">
+              <div class="type-scale-row">
+                <div class="type-scale-meta">mono-sm<br>13px / 1.5</div>
+                <p style="font-family: var(--font-mono); font-size: 0.8125rem; line-height: 1.5; color: var(--ink-2);">Project metadata, timestamps, step counters, inline code references</p>
+              </div>
+              <div class="type-scale-row">
+                <div class="type-scale-meta">mono-xs<br>11px / upper</div>
+                <p style="font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3);">Section labels · version numbers · mode indicators</p>
+              </div>
+              <div class="type-scale-row">
+                <div class="type-scale-meta">badges</div>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.375rem;">
+                  <span class="badge badge-neutral">v3.0.0</span>
+                  <span class="badge badge-neutral">2026-05-06</span>
+                  <span class="badge badge-blue">claude-opus-4</span>
+                  <span class="badge badge-purple">gemini-2.5</span>
+                  <span class="badge badge-neutral">tailwind-v4</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ============================================================
+             COLOR SYSTEM
+             ============================================================ -->
+
+        <section class="doc-section" id="color">
+          <div class="section-eyebrow">Color System</div>
+          <h2 class="section-title">Mode-aware palettes</h2>
+          <p class="section-lead">Semantic tokens remap per mode. Components bind to <code>--bg</code>, <code>--ink</code>, <code>--accent</code>, and <code>--border</code> — never to raw values.</p>
+
+          <!-- Lab Palette -->
+          <div class="palette-group">
+            <div class="palette-group-label">Lab Mode</div>
+            <div class="swatch-grid">
+              <div class="swatch">
+                <div class="swatch-color" style="background: #ffffff; border-bottom: 1px solid #e2e5ea;"></div>
+                <div class="swatch-info"><div class="swatch-name">--bg</div><div class="swatch-value">#FFFFFF</div></div>
+              </div>
+              <div class="swatch">
+                <div class="swatch-color" style="background: #111318;"></div>
+                <div class="swatch-info"><div class="swatch-name">--ink</div><div class="swatch-value">#111318</div></div>
+              </div>
+              <div class="swatch">
+                <div class="swatch-color" style="background: #558fe5;"></div>
+                <div class="swatch-info"><div class="swatch-name">--accent</div><div class="swatch-value">#558fe5</div></div>
+              </div>
+              <div class="swatch">
+                <div class="swatch-color" style="background: #f3f5f8;"></div>
+                <div class="swatch-info"><div class="swatch-name">--surface</div><div class="swatch-value">#f3f5f8</div></div>
+              </div>
+              <div class="swatch">
+                <div class="swatch-color" style="background: #e2e5ea;"></div>
+                <div class="swatch-info"><div class="swatch-name">--border</div><div class="swatch-value">#e2e5ea</div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Studio Palette -->
+          <div class="palette-group">
+            <div class="palette-group-label">Studio Mode</div>
+            <div class="swatch-grid">
+              <div class="swatch">
+                <div class="swatch-color" style="background: oklch(96.2% 0.01 80);"></div>
+                <div class="swatch-info"><div class="swatch-name">--bg</div><div class="swatch-value">#F6F3EC</div></div>
+              </div>
+              <div class="swatch">
+                <div class="swatch-color" style="background: oklch(13% 0.004 264);"></div>
+                <div class="swatch-info"><div class="swatch-name">--ink</div><div class="swatch-value">#111111</div></div>
+              </div>
+              <div class="swatch">
+                <div class="swatch-color" style="background: oklch(65% 0.19 35);"></div>
+                <div class="swatch-info"><div class="swatch-name">--accent</div><div class="swatch-value">#E86A2C</div></div>
+              </div>
+              <div class="swatch">
+                <div class="swatch-color" style="background: oklch(92% 0.014 80);"></div>
+                <div class="swatch-info"><div class="swatch-name">--surface</div><div class="swatch-value">#EDE9E0</div></div>
+              </div>
+              <div class="swatch">
+                <div class="swatch-color" style="background: oklch(85% 0.012 80);"></div>
+                <div class="swatch-info"><div class="swatch-name">--border</div><div class="swatch-value">#D9D3C7</div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Extended -->
+          <div class="palette-group">
+            <div class="palette-group-label">Extended Palette</div>
+            <div class="swatch-grid">
+              <div class="swatch">
+                <div class="swatch-color" style="background: oklch(55% 0.22 264);"></div>
+                <div class="swatch-info"><div class="swatch-name">Blue Accent</div><div class="swatch-value">#2563EB</div></div>
+              </div>
+              <div class="swatch">
+                <div class="swatch-color" style="background: oklch(89% 0.08 130);"></div>
+                <div class="swatch-info"><div class="swatch-name">Sage</div><div class="swatch-value">#D5EBB6</div></div>
+              </div>
+              <div class="swatch">
+                <div class="swatch-color" style="background: oklch(78% 0.14 75);"></div>
+                <div class="swatch-info"><div class="swatch-name">Amber</div><div class="swatch-value">#E5AE63</div></div>
+              </div>
+              <div class="swatch">
+                <div class="swatch-color" style="background: oklch(48% 0.18 25);"></div>
+                <div class="swatch-info"><div class="swatch-name">Deep Red</div><div class="swatch-value">#C13820</div></div>
+              </div>
+              <div class="swatch">
+                <div class="swatch-color" style="background: oklch(68.5% 0.025 250);"></div>
+                <div class="swatch-info"><div class="swatch-name">Pewter</div><div class="swatch-value">#909EAE</div></div>
+              </div>
+              <div class="swatch">
+                <div class="swatch-color" style="background: oklch(74% 0.10 258);"></div>
+                <div class="swatch-info"><div class="swatch-name">Paper Blue</div><div class="swatch-value">#81ACEC</div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Token table -->
+          <div class="subsection-label">Semantic Tokens</div>
+          <table class="token-table">
+            <thead>
+              <tr>
+                <th>Token</th>
+                <th>Lab</th>
+                <th>Studio</th>
+                <th>Usage</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="token-name">--bg</span></td>
+                <td><span class="token-swatch" style="background:#fff;"></span> <span class="token-value">#FFFFFF</span></td>
+                <td><span class="token-swatch" style="background:oklch(96.2% 0.01 80);"></span> <span class="token-value">#F6F3EC</span></td>
+                <td class="token-desc">Page background</td>
+              </tr>
+              <tr>
+                <td><span class="token-name">--ink</span></td>
+                <td><span class="token-swatch" style="background:#111318;"></span> <span class="token-value">#111318</span></td>
+                <td><span class="token-swatch" style="background:oklch(13% 0.004 264);"></span> <span class="token-value">#111111</span></td>
+                <td class="token-desc">Primary text, icons</td>
+              </tr>
+              <tr>
+                <td><span class="token-name">--accent</span></td>
+                <td><span class="token-swatch" style="background:#558fe5;"></span> <span class="token-value">#558fe5</span></td>
+                <td><span class="token-swatch" style="background:oklch(65% 0.19 35);"></span> <span class="token-value">#E86A2C</span></td>
+                <td class="token-desc">Links, interactive elements, highlights</td>
+              </tr>
+              <tr>
+                <td><span class="token-name">--border</span></td>
+                <td><span class="token-swatch" style="background:#e2e5ea;"></span> <span class="token-value">#e2e5ea</span></td>
+                <td><span class="token-swatch" style="background:oklch(85% 0.012 80);"></span> <span class="token-value">#D9D3C7</span></td>
+                <td class="token-desc">Dividers, card edges, form borders</td>
+              </tr>
+              <tr>
+                <td><span class="token-name">--surface</span></td>
+                <td><span class="token-swatch" style="background:#f3f5f8;"></span> <span class="token-value">#f3f5f8</span></td>
+                <td><span class="token-swatch" style="background:oklch(92% 0.014 80);"></span> <span class="token-value">#EDE9E0</span></td>
+                <td class="token-desc">Code blocks, subtle backgrounds, chips</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+
+        <!-- ============================================================
+             COMPONENTS — BUTTONS
+             ============================================================ -->
+
+        <section class="doc-section" id="components">
+          <div class="section-eyebrow">Components</div>
+          <h2 class="section-title">Adaptive elements</h2>
+          <p class="section-lead">Components bind to semantic tokens. Switch modes and they adapt — no conditional logic, just CSS custom properties doing their job.</p>
+
+          <div class="subsection-label">Buttons</div>
+          <div class="component-group">
+            <div class="code-block">
+              <div class="code-block-header">
+                <span class="code-block-lang">Preview</span>
+              </div>
+              <div style="padding: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.625rem; align-items: center; background: var(--bg-subtle); transition: background 0.5s;">
+                <button class="btn btn-primary">Primary Action</button>
+                <button class="btn btn-secondary">Secondary</button>
+                <button class="btn btn-ghost">Ghost</button>
+                <button class="btn btn-danger">Destructive</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- BADGES section -->
+          <div class="subsection-label" id="badges">Badges &amp; Tags</div>
+          <div class="component-group">
+            <div class="code-block">
+              <div class="code-block-header">
+                <span class="code-block-lang">Preview</span>
+              </div>
+              <div style="padding: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem; background: var(--bg-subtle); transition: background 0.5s;">
+                <span class="badge badge-blue"><span class="badge-dot"></span>Lab</span>
+                <span class="badge badge-orange"><span class="badge-dot"></span>Studio</span>
+                <span class="badge badge-green"><span class="badge-dot"></span>Shipped</span>
+                <span class="badge badge-purple"><span class="badge-dot"></span>Experiment</span>
+                <span class="badge badge-red"><span class="badge-dot"></span>Blocked</span>
+                <span class="badge badge-neutral">v3.0.0</span>
+                <span class="badge badge-neutral">2026-05-06</span>
+                <span class="badge badge-blue">claude-opus-4</span>
+                <span class="badge badge-purple">gemini-2.5</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- CARDS section -->
+          <div class="subsection-label" id="cards">Cards In Context</div>
+          <div class="card-grid">
+
+            <div class="card card-lab">
+              <div class="card-eyebrow">Lab / Product Feature</div>
+              <div class="card-title">Auto-Organizer Pipeline</div>
+              <div class="card-body">Watches the inbox for dropped files. Audio goes through Whisper, then AI polishes everything into structured notes. Runs on login, zero intervention.</div>
+              <div class="card-footer">
+                <div style="display: flex; gap: 0.375rem; flex-wrap: wrap;">
+                  <span class="badge badge-blue" style="font-size: 0.625rem; padding: 0.15rem 0.5rem;">Claude</span>
+                  <span class="badge badge-neutral" style="font-size: 0.625rem; padding: 0.15rem 0.5rem;">Python</span>
+                </div>
+                <span class="card-meta">00-tools/auto-organizer</span>
+              </div>
+            </div>
+
+            <div class="card card-studio">
+              <div class="card-eyebrow">Studio / Case Study</div>
+              <div class="card-title">BumperDoc SEO Audit</div>
+              <div class="card-body">Full technical SEO audit and content strategy for a collision repair franchise. Positioned local search dominance across 12 metro locations.</div>
+              <div class="card-footer">
+                <div style="display: flex; gap: 0.375rem; flex-wrap: wrap;">
+                  <span class="badge badge-orange" style="font-size: 0.625rem; padding: 0.15rem 0.5rem;">Strategy</span>
+                  <span class="badge badge-orange" style="font-size: 0.625rem; padding: 0.15rem 0.5rem;">SEO</span>
+                </div>
+                <span class="card-meta">Client / 2026</span>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+
+        <!-- ============================================================
+             SPACING
+             ============================================================ -->
+
+        <section class="doc-section" id="spacing">
+          <div class="section-eyebrow">Spacing Scale</div>
+          <h2 class="section-title">8pt grid foundation</h2>
+          <p class="section-lead">4px base unit. Every spatial decision maps to this scale. Components use fixed steps; section gaps use fluid <code>clamp()</code> values.</p>
+
+          <div style="border: 1px solid var(--border); border-radius: 10px; overflow: hidden; transition: border-color 0.5s;">
+            <div class="spacing-row" style="padding: 0.625rem 1.25rem; background: var(--bg-subtle); border-bottom: 1px solid var(--border);">
+              <span style="font-family: var(--font-mono); font-size: 0.625rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-4);">Token</span>
+              <span style="font-family: var(--font-mono); font-size: 0.625rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-4);">Visual</span>
+              <span style="font-family: var(--font-mono); font-size: 0.625rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-4); text-align: right;">Value</span>
+            </div>
+            <div style="padding: 0 1.25rem;">
+              <div class="spacing-row"><span class="spacing-token">--space-xs</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width: 4px;"></div></div><span class="spacing-px">4px</span></div>
+              <div class="spacing-row"><span class="spacing-token">--space-sm</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width: 8px;"></div></div><span class="spacing-px">8px</span></div>
+              <div class="spacing-row"><span class="spacing-token">--space-md</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width: 16px;"></div></div><span class="spacing-px">16px</span></div>
+              <div class="spacing-row"><span class="spacing-token">--space-lg</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width: 24px;"></div></div><span class="spacing-px">24px</span></div>
+              <div class="spacing-row"><span class="spacing-token">--space-xl</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width: 32px;"></div></div><span class="spacing-px">32px</span></div>
+              <div class="spacing-row"><span class="spacing-token">--space-2xl</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width: 48px;"></div></div><span class="spacing-px">48px</span></div>
+              <div class="spacing-row"><span class="spacing-token">--space-3xl</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width: 64px;"></div></div><span class="spacing-px">64px</span></div>
+              <div class="spacing-row"><span class="spacing-token">--space-4xl</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width: 96px;"></div></div><span class="spacing-px">96px</span></div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ============================================================
+             MOTION
+             ============================================================ -->
+
+        <section class="doc-section" id="motion">
+          <div class="section-eyebrow">Motion</div>
+          <h2 class="section-title">Physics-based easing</h2>
+          <p class="section-lead">Hover each row to see the curve in action. No <code>ease</code> or <code>ease-in-out</code> defaults — every transition uses a physics-based curve.</p>
+
+          <div class="easing-card">
+            <div class="easing-row easing-expo">
+              <span class="easing-name">Expo Out</span>
+              <div class="easing-track"><div class="easing-ball"></div></div>
+              <span class="easing-value">cubic-bezier(.16,1,.3,1)</span>
+            </div>
+            <div class="easing-row easing-back">
+              <span class="easing-name">Back Out</span>
+              <div class="easing-track"><div class="easing-ball"></div></div>
+              <span class="easing-value">cubic-bezier(.175,.885,.32,1.275)</span>
+            </div>
+            <div class="easing-row easing-quint">
+              <span class="easing-name">Quint I/O</span>
+              <div class="easing-track"><div class="easing-ball"></div></div>
+              <span class="easing-value">cubic-bezier(.83,0,.17,1)</span>
+            </div>
+          </div>
+
+          <div class="callout" style="margin-top: 1.25rem;">
+            <svg class="callout-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path d="M2 8h12M8 2l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class="callout-text">
+              <strong>Mode transitions</strong> use <code>0.5s var(--expo-out)</code> across all semantic tokens. The surface, ink, and accent all animate together — creating a cohesive state change rather than a jarring swap.
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ============================================================
+             THE MARK
+             ============================================================ -->
+
+        <section class="doc-section" id="mark">
+          <div class="section-eyebrow">Identity</div>
+          <h2 class="section-title">The /L Monogram</h2>
+          <p class="section-lead">Math-based geometry. <code>viewBox 0 0 500 440</code>. Renders in <code>--ink</code> by default, <code>--accent</code> for emphasis. One mark, both modes.</p>
+
+          <div class="mark-grid">
+            <div class="mark-panel mark-panel-lab">
+              <svg viewBox="0 0 500 440" style="width: clamp(3rem, 8vw, 5.5rem); fill: oklch(21.6% 0.003 264);" aria-hidden="true">
+                <path d="M240 0H330V350H500V440H247.06V175L102.52 440H0L240 0Z"/>
+              </svg>
+              <span class="mark-panel-label">Lab — Ink</span>
+            </div>
+            <div class="mark-panel mark-panel-lab">
+              <svg viewBox="0 0 500 440" style="width: clamp(3rem, 8vw, 5.5rem); fill: #558fe5;" aria-hidden="true">
+                <path d="M240 0H330V350H500V440H247.06V175L102.52 440H0L240 0Z"/>
+              </svg>
+              <span class="mark-panel-label">Lab — Accent</span>
+            </div>
+            <div class="mark-panel mark-panel-studio">
+              <svg viewBox="0 0 500 440" style="width: clamp(3rem, 8vw, 5.5rem); fill: oklch(13% 0.004 264);" aria-hidden="true">
+                <path d="M240 0H330V350H500V440H247.06V175L102.52 440H0L240 0Z"/>
+              </svg>
+              <span class="mark-panel-label" style="color: oklch(40% 0.006 264);">Studio — Ink</span>
+            </div>
+            <div class="mark-panel mark-panel-dark">
+              <svg viewBox="0 0 500 440" style="width: clamp(3rem, 8vw, 5.5rem); fill: #ffffff;" aria-hidden="true">
+                <path d="M240 0H330V350H500V440H247.06V175L102.52 440H0L240 0Z"/>
+              </svg>
+              <span class="mark-panel-label" style="color: oklch(55% 0.003 264);">Dark — Reversed</span>
+            </div>
+          </div>
+
+          <div class="callout" style="margin-top: 1.25rem;">
+            <svg class="callout-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <circle cx="8" cy="8" r="6.5"/>
+              <path d="M8 7v4M8 5.5v.5" stroke-linecap="round"/>
+            </svg>
+            <div class="callout-text">
+              The /L mark is a single <code>&lt;path&gt;</code> element. No groups, no masks, no gradients by default. It scales from 16px favicon to billboard without modification. Use <code>fill="currentColor"</code> to inherit from context.
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ============================================================
+             VOICE
+             ============================================================ -->
+
+        <section class="doc-section" id="voice">
+          <div class="section-eyebrow">Voice &amp; Tone</div>
+          <h2 class="section-title">How the brand speaks</h2>
+          <p class="section-lead">Same person, different room. Both modes share the authentic voice — contractions mandatory, no AI slop, the collar stays loose.</p>
+
+          <div class="voice-pair">
+            <div class="voice-card">
+              <div class="voice-card-header">
+                <span class="voice-card-mode">Lab Voice</span>
+                <span class="voice-card-type">Technical, direct</span>
+              </div>
+              <div class="voice-card-body">"This pipeline watches the inbox, transcribes audio through Whisper, and writes polished notes to the vault. It runs on login."</div>
+              <div class="voice-card-note">Precise. Confident. Says what it does, not what it could do.</div>
+            </div>
+            <div class="voice-card">
+              <div class="voice-card-header">
+                <span class="voice-card-mode studio">Studio Voice</span>
+                <span class="voice-card-type">Editorial, strategic</span>
+              </div>
+              <div class="voice-card-body">"The homepage isn't a feature list — it's a first impression. We rewrote it as a story about what you actually do for people."</div>
+              <div class="voice-card-note">Warm. Opinionated. Earns trust before it asks for anything.</div>
+            </div>
+          </div>
+
+          <div class="subsection-label">Principles</div>
+          <ul class="principles-list">
+            <li class="principle-item">
+              <span class="principle-num">01</span>
+              <p class="principle-text"><strong>Contractions are mandatory.</strong> "It's" not "It is." "You're" not "You are." Stiff language signals a brand that doesn't trust itself.</p>
+            </li>
+            <li class="principle-item">
+              <span class="principle-num">02</span>
+              <p class="principle-text"><strong>No AI slop.</strong> "Leverage," "synergize," "unlock potential" — these are words that mean nothing and say less. Every sentence should be able to defend itself.</p>
+            </li>
+            <li class="principle-item">
+              <span class="principle-num">03</span>
+              <p class="principle-text"><strong>The collar stays loose.</strong> Expertise without arrogance. Confident without being a prick about it. The goal is to make the reader feel smarter, not smaller.</p>
+            </li>
+            <li class="principle-item">
+              <span class="principle-num">04</span>
+              <p class="principle-text"><strong>Specificity over generality.</strong> "12 metro locations" beats "multiple locations." "Whisper" beats "an AI transcription tool." Details are credibility.</p>
+            </li>
+            <li class="principle-item">
+              <span class="principle-num">05</span>
+              <p class="principle-text"><strong>Curiosity as a discipline.</strong> Every piece of writing should make the reader want to know what comes next. If it doesn't, cut it.</p>
+            </li>
+          </ul>
+        </section>
+
+
+        <!-- ============================================================
+             FOOTER
+             ============================================================ -->
+
+        <footer class="doc-footer">
+          <div class="footer-brand">
+            <svg class="footer-mark" viewBox="0 0 500 440" aria-hidden="true">
+              <path d="M240 0H330V350H500V440H247.06V175L102.52 440H0L240 0Z"/>
+            </svg>
+            <span class="footer-text">Lupo Studios Brand System v3 — 2026</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <span class="badge badge-neutral">Anthony Lupo</span>
+            <span class="badge badge-blue">@humanlup</span>
+          </div>
+        </footer>
+
+
+      </div><!-- /content-inner -->
+    </main><!-- /content -->
+
+  </div><!-- /shell -->
+
+
+  <script>
+    // ================================================================
+    // MODE TOGGLE
+    // ================================================================
+
+    function setMode(mode) {
+      const html = document.documentElement;
+      const btnLab = document.getElementById('btn-lab');
+      const btnStudio = document.getElementById('btn-studio');
+      const modeDisplay = document.getElementById('mode-display');
+
+      if (mode === 'studio') {
+        html.classList.add('mode-studio');
+        btnLab.classList.remove('active');
+        btnLab.setAttribute('aria-checked', 'false');
+        btnStudio.classList.add('active');
+        btnStudio.setAttribute('aria-checked', 'true');
+        if (modeDisplay) modeDisplay.textContent = 'Studio';
+      } else {
+        html.classList.remove('mode-studio');
+        btnLab.classList.add('active');
+        btnLab.setAttribute('aria-checked', 'true');
+        btnStudio.classList.remove('active');
+        btnStudio.setAttribute('aria-checked', 'false');
+        if (modeDisplay) modeDisplay.textContent = 'Lab';
+      }
+    }
+
+
+    // ================================================================
+    // SIDEBAR ACTIVE STATE ON SCROLL
+    // ================================================================
+
+    const sections = document.querySelectorAll('[id]');
+    const navLinks = document.querySelectorAll('.sidebar-nav a');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${id}`) {
+              link.classList.add('active');
+            }
+          });
+        }
+      });
+    }, {
+      rootMargin: '-20% 0px -70% 0px',
+      threshold: 0
+    });
+
+    sections.forEach(section => observer.observe(section));
+
+
+    // ================================================================
+    // COPY BUTTONS
+    // ================================================================
+
+    document.querySelectorAll('.code-copy-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const pre = btn.closest('.code-block').querySelector('pre');
+        if (pre) {
+          navigator.clipboard.writeText(pre.textContent.trim()).then(() => {
+            const orig = btn.textContent;
+            btn.textContent = 'Copied';
+            setTimeout(() => btn.textContent = orig, 1500);
+          });
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
